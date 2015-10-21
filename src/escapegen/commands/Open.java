@@ -55,5 +55,9 @@ public class Open extends Command {
         }
 
         game.setCurrentSpace(c);
+
+        if (game.getGoal() == c) {
+            game.endGame();
+        }
     }
 }

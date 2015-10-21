@@ -1,6 +1,7 @@
 package escapegen;
 
 import escapegen.context.Game;
+import escapegen.context.Generator;
 
 /**
  * @author - Vita Loginova
@@ -8,8 +9,9 @@ import escapegen.context.Game;
 public class Launcher {
 
     public static void main(String[] args) {
-        System.out.println("Hmm, my laptop is in the safe. But I forgot a code... I believe I've wrote it somewhere.");
-        Game game = new Game();
-        (new CommandLine(game)).start();
+        System.out.println("Where am I?");
+        Generator gen = new Generator();
+        Game game = gen.generate(10);
+        new CommandLine(game).start();
     }
 }

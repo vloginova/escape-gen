@@ -55,7 +55,7 @@ public abstract class Container extends Item {
      *
      * @param parent {@code Container} to which this belongs.
      */
-    public void setParent(Container parent) {
+    protected void setParent(Container parent) {
         this.parent = parent;
     }
 
@@ -72,12 +72,12 @@ public abstract class Container extends Item {
      * @return {@code true} if opening is succeed.
      */
     public boolean tryOpen(Collection<Tool> tools) {
-        if (lock == null || lock.isUnlocked() || lock.tryUnlock(tools)) {
-            showContent();
-            return true;
+        if (lock != null && !lock.isUnlocked() && !lock.tryUnlock(tools)) {
+            return false;
         }
 
-        return false;
+        showContent();
+        return true;
     }
 
     /**
@@ -99,7 +99,7 @@ public abstract class Container extends Item {
         if (lock == null)
             return new LinkedList<>();
 
-        return this.lock.getTools().values();
+        return lock.getTools().values();
     }
 
     public boolean isFull() { return false; }
