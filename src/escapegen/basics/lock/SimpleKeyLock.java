@@ -19,7 +19,12 @@ public class SimpleKeyLock extends Lock {
 
     @Override
     protected boolean unlock(Tool tool) {
-        return tools.containsValue(tool);
+        boolean unlocked = tools.containsValue(tool);
+
+        if (unlocked)
+            tool.use();
+
+        return unlocked;
     }
 
     @Override

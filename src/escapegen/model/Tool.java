@@ -8,7 +8,16 @@ package escapegen.model;
  */
 public abstract class Tool extends Item {
 
+    private boolean isUsed = false;
+
     protected Tool(String id, Size size) {
         super(id, size);
+    }
+
+    public final boolean isUsed() {
+        return isUsed;
+    }
+    public final void use() {
+        isUsed = true;
     }
 }

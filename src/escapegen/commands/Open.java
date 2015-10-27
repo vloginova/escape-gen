@@ -51,9 +51,11 @@ public class Open extends Command {
             return;
         }
 
-        game.setCurrentSpace(c);
-        c.showContent();
+        if (tool != null && tool.isUsed())
+            game.inventory().remove(args[3]);
 
+        c.showContent();
+        game.setCurrentSpace(c);
 
         if (game.getGoal() == c) {
             game.endGame();
