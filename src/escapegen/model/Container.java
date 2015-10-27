@@ -15,10 +15,12 @@ public abstract class Container extends Item {
     protected Lock lock;
     protected Map<String, Item> items = new HashMap<>();
     private Container parent;
+    private boolean isOpened;
 
     protected Container(String id, Size size) {
         super(id, size);
         parent = this;
+        isOpened = false;
     }
 
     /**
@@ -71,7 +73,15 @@ public abstract class Container extends Item {
      * @return {@code true} if opening is succeed.
      */
     public final boolean tryOpen(Tool tool) {
-        return lock == null || lock.tryUnlock(tool);
+        isOpened = isOpened || lock == null || lock.tryUnlock(tool);
+        return isOpened;
+    }
+
+    /**
+     * Closes the Container.
+     */
+    public void close() {
+        isOpened = false;
     }
 
     /**
@@ -107,6 +117,11 @@ public abstract class Container extends Item {
 
         return lock.getTools();
     }
+
+    /**
+     * @return {@code true} if the Container is opened, {@code false} otherwise.
+     */
+    public boolean isOpened() { return isOpened; }
 
     /**
      * Returns {@link Container#items} subset including only objects of

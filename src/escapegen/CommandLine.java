@@ -21,7 +21,8 @@ public class CommandLine {
         this.game = game;
 
         putCommand(new Back(game), new Inventory(game), new Examine(game),
-                new Lookaround(game), new Open(game), new Take(game), new Help(game));
+                new Lookaround(game), new Open(game), new Take(game), new Help(game),
+                new Close(game));
     }
 
     private void putCommand(Command... toPut) {
