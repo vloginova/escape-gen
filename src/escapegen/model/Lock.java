@@ -14,7 +14,7 @@ import java.util.Map;
 public abstract class Lock {
 
     protected boolean isUnlocked = false;
-    protected Map<String, Tool> tools = new HashMap<>(3);
+    protected Map<String, Tool> tools = new HashMap<>();
 
     /**
      * Performs actions necessary for the concrete lock. For example, it
@@ -26,24 +26,31 @@ public abstract class Lock {
     protected abstract boolean unlock(Collection<Tool> bp);
 
     /**
-     * Checks if {@code Lock} is already opened.
+     * Tries to unlock {@code this} using {@code tools}
      *
-     * @return {@code true} if {@code Lock} is opened
+     * @param tools Tools to unlock the lock.
+     * @return {@code true} if unlocking is succeed, {@code else} otherwise.
      */
-    public boolean isUnlocked() {
+    public final boolean tryUnlock(Collection<Tool> tools) {
+        isUnlocked = isUnlocked || unlock(tools);
         return isUnlocked;
     }
 
-    public boolean tryUnlock(Collection<Tool> bp) {
-        isUnlocked = isUnlocked || unlock(bp);
-        return isUnlocked;
+    /**
+     * @return Collection of {@link Tool}s necessary for unlocking {@code this}.
+     */
+    protected final Collection<Tool> getTools() {
+        return tools.values();
     }
 
-    public Map<String, Tool> getTools() {
-        return tools;
-    }
-
-    protected void putTool(Tool tool) {
+    /**
+     * Adds {@link Tool} necessary for unlocking {@code this}. This might be
+     * not only tools that have to be passed in {@link Lock#tryUnlock(Collection)}
+     * method, but also those which contains tips (e.g. a pieces of code).
+     *
+     * @param tool {@link Tool}
+     */
+    protected final void addTool(Tool tool) {
         tools.put(tool.toString(), tool);
     }
 }

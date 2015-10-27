@@ -1,6 +1,6 @@
 package escapegen.context;
 
-import escapegen.basics.*;
+import escapegen.basics.container.*;
 import escapegen.model.Container;
 import escapegen.model.Item;
 import escapegen.model.Tool;
@@ -45,6 +45,7 @@ public class Generator {
         containerClasses.add(Table.class);
         containerClasses.add(Vault.class);
         containerClasses.add(Bin.class);
+        containerClasses.add(Pillow.class);
 
         goalClass = Door.class;
     }
@@ -72,7 +73,7 @@ public class Generator {
 
             /* Step 1: Generate goal. */
             Container goal = (Container) goalClass.newInstance();
-            tools.addAll(goal.getTools());
+            tools.addAll(goal.getLockTools());
             furniture.add(goal);
             game.setGoal(goal);
 
@@ -84,8 +85,8 @@ public class Generator {
                 List<Container> temp = new LinkedList<>(container.getContainers());
                 temp.add(container);
 
-                temp.stream().filter(c -> !c.isFull()).forEach(c -> {
-                    if (c.getTools().isEmpty()) {
+                temp.stream().forEach(c -> {
+                    if (c.getLockTools().isEmpty()) {
                         free.add(c);
                     } else {
                         withTools.add(c);
@@ -98,7 +99,7 @@ public class Generator {
                 Tool tool = (Tool) removeRandItem(random, tools);
                 Container container = (Container) removeRandItem(random, withTools);
                 container.putItem(tool);
-                tools.addAll(container.getTools());
+                tools.addAll(container.getLockTools());
             }
 
             /* Step 4: Locate tools in lock-free containers. */

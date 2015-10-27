@@ -18,6 +18,6 @@ public class Lookaround extends Command {
             return;
         }
 
-        game.currentSpace().getItems().values().forEach(System.out::println);
+        game.currentSpace().showContent();
     }
 }

@@ -1,4 +1,4 @@
-package escapegen.basics;
+package escapegen.basics.tool;
 
 import escapegen.model.Tool;
 
@@ -7,14 +7,14 @@ import escapegen.model.Tool;
  */
 public class Paper extends Tool {
 
-    private String code;
+    private String text;
 
-    public Paper(String id, String code) {
+    public Paper(String id, String text) {
         super(id, Size.Small);
-        this.code = code;
+        this.text = text;
     }
 
     public void examine() {
-        System.out.println(code);
+        System.out.println(text);
     }
 }

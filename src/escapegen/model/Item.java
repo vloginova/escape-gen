@@ -24,7 +24,7 @@ public abstract class Item {
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return id;
     }
 }

@@ -15,7 +15,7 @@ public class ContainerTest {
     public void testTryOpen() throws Exception {
         Container container = new Container("TestContainer", Item.Size.Small) {
             @Override
-            protected void showContent() {
+            public void showContent() {
                 /* do nothing */
             }
         };

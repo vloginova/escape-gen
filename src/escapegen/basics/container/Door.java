@@ -1,5 +1,6 @@
-package escapegen.basics;
+package escapegen.basics.container;
 
+import escapegen.basics.lock.SimpleKeyLock;
 import escapegen.model.Container;
 
 /**
@@ -13,5 +14,5 @@ public class Door extends Container {
     }
 
     @Override
-    protected void showContent() { System.out.println("Congrats!"); }
+    public void showContent() { System.out.println("Congrats!"); }
 }

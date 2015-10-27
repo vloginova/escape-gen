@@ -9,7 +9,8 @@ import escapegen.model.Tool;
 public class Examine extends Command {
 
     public Examine(Game game) {
-        super(game, "examine", "examine\n\tExamine the specified tool that you have in your inventory.");
+        super(game, "examine", "examine tool\n\t" +
+                "Examine specified tool that you have in your inventory.");
     }
 
     @Override

@@ -19,7 +19,7 @@ public class Take extends Command {
             return;
         }
 
-        Tool tool = game.currentSpace().pickTool(args[1]);
+        Tool tool = game.currentSpace().popTool(args[1]);
 
         if (tool == null) {
             System.out.println("There is no such thing.");

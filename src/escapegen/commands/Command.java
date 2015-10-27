@@ -23,12 +23,12 @@ public abstract class Command {
         this.game = game;
     }
 
-    public String help() {
+    public final String help() {
         return help;
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return name;
     }
 

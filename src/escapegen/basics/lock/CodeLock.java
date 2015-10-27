@@ -1,5 +1,6 @@
-package escapegen.basics;
+package escapegen.basics.lock;
 
+import escapegen.basics.tool.Paper;
 import escapegen.model.Lock;
 import escapegen.model.Tool;
 
@@ -18,8 +19,8 @@ public class CodeLock extends Lock {
 
     public CodeLock() {
         code = (new Random()).nextInt(10000);
-        putTool(new Paper("PaperL", String.format("%02d...", code / 100)));
-        putTool(new Paper("PaperR", String.format("...%02d", code % 100)));
+        addTool(new Paper("PaperL", String.format("%02d...", code / 100)));
+        addTool(new Paper("PaperR", String.format("...%02d", code % 100)));
     }
 
     @Override

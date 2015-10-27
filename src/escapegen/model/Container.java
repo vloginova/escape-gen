@@ -16,7 +16,10 @@ public abstract class Container extends Item {
     protected Map<String, Item> items = new HashMap<>();
     private Container parent;
 
-    protected Container(String id, Size size) { super(id, size); }
+    protected Container(String id, Size size) {
+        super(id, size);
+        parent = this;
+    }
 
     /**
      * Puts the specified item in the container.
@@ -24,7 +27,7 @@ public abstract class Container extends Item {
      *
      * @param item to put.
      */
-    public void putItem(Item item) {
+    public final void putItem(Item item) {
         this.items.put(item.toString(), item);
         if (Container.class.isInstance(item))
             ((Container) item).setParent(this);
@@ -35,59 +38,51 @@ public abstract class Container extends Item {
      *
      * @param items {@code Collection} of items to add.
      */
-    public void putAllItems(Collection<Item> items) {
+    public final void putAllItems(Collection<Item> items) {
         items.forEach(this::putItem);
     }
 
     /**
-     * All containers are places in some other container. There is only one
-     * exception for the outermost one, which parent is itself.
+     * Container might be placed in some other container which becomes its
+     * parent. Default parent for container is itself.
      *
      * @return parent {@code Container}
      */
-    public Container getParent() {
+    public final Container getParent() {
         return parent;
     }
 
     /**
-     * Sets parent container. This method should be used only during
-     * construction stage.
+     * Sets parent container.
      *
      * @param parent {@code Container} to which this belongs.
      */
-    protected void setParent(Container parent) {
-        this.parent = parent;
-    }
+    protected final void setParent(Container parent) {
+        if (parent == null)
+            throw new IllegalArgumentException("Parent container cannot be null");
 
-    public Map<String, Item> getItems() {
-        return items;
+        this.parent = parent;
     }
 
     /**
      * Tries to open the Container using {@code tools}.
-     * TODO: remove tools from the inventory.
      *
      * @param tools A collection of tools that is supposed to open the
      *              {@link Container#lock}
      * @return {@code true} if opening is succeed.
      */
-    public boolean tryOpen(Collection<Tool> tools) {
-        if (lock != null && !lock.isUnlocked() && !lock.tryUnlock(tools)) {
-            return false;
-        }
-
-        showContent();
-        return true;
+    public final boolean tryOpen(Collection<Tool> tools) {
+        return lock == null || lock.tryUnlock(tools);
     }
 
     /**
      * Gets {@link Tool} from the container and removes it.
      *
      * @param name The string representation of the tool.
-     * @return the corresponding {@code Tool}, {@code null} if there is no such
-     *         tool.
+     * @return The corresponding {@code Tool}, {@code null} if there is no such
+     * tool.
      */
-    public Tool pickTool(String name) {
+    public Tool popTool(String name) {
         Item item = items.get(name);
         if (item == null || !Tool.class.isInstance(item))
             return null;
@@ -95,22 +90,41 @@ public abstract class Container extends Item {
         return (Tool) items.remove(name);
     }
 
-    public Collection<Tool> getTools() {
-        if (lock == null)
-            return new LinkedList<>();
-
-        return lock.getTools().values();
-    }
-
-    public boolean isFull() { return false; }
-
-    public List<Container> getContainers() {
-        return items.values().stream().filter(Container.class::isInstance)
-                .map(item -> (Container) item).collect(Collectors.toCollection(LinkedList::new));
+    public Item peekItem(String name) {
+        return items.get(name);
     }
 
     /**
-     * In case the container is unlocked, shows the internals.
+     * Used by {@link escapegen.context.Generator}, returns list of
+     * {@link Tool}s necessary for opening the {@link Container#lock}
+     *
+     * @return list of {@link Tool}s necessary for opening the
+     * {@link Container#lock}
      */
-    protected abstract void showContent();
+    public Collection<Tool> getLockTools() {
+        if (lock == null) {
+            return new LinkedList<>();
+        }
+
+        return lock.getTools();
+    }
+
+    /**
+     * Returns {@link Container#items} subset including only objects of
+     * {@link Container} type.
+     *
+     * @return List of {@link Container}s.
+     */
+    public List<Container> getContainers() {
+        return items.values().stream()
+                .filter(Container.class::isInstance)
+                .map(item -> (Container) item)
+                .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    /**
+     * Shows the internals.
+     * TODO: must be opened.
+     */
+    public abstract void showContent();
 }

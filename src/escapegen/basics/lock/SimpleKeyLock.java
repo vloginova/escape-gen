@@ -1,4 +1,4 @@
-package escapegen.basics;
+package escapegen.basics.lock;
 
 import escapegen.model.Item;
 import escapegen.model.Lock;
