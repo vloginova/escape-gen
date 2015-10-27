@@ -4,8 +4,6 @@ import escapegen.model.Item;
 import escapegen.model.Lock;
 import escapegen.model.Tool;
 
-import java.util.Collection;
-
 /**
  * @author - Vita Loginova
  */
@@ -20,8 +18,8 @@ public class SimpleKeyLock extends Lock {
     }
 
     @Override
-    protected boolean unlock(Collection<Tool> inventory) {
-        return inventory.containsAll(tools.values());
+    protected boolean unlock(Tool tool) {
+        return tools.containsValue(tool);
     }
 
     @Override

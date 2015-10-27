@@ -67,12 +67,11 @@ public abstract class Container extends Item {
     /**
      * Tries to open the Container using {@code tools}.
      *
-     * @param tools A collection of tools that is supposed to open the
-     *              {@link Container#lock}
+     * @param tool A tool that is supposed to open the {@link Container#lock}
      * @return {@code true} if opening is succeed.
      */
-    public final boolean tryOpen(Collection<Tool> tools) {
-        return lock == null || lock.tryUnlock(tools);
+    public final boolean tryOpen(Tool tool) {
+        return lock == null || lock.tryUnlock(tool);
     }
 
     /**

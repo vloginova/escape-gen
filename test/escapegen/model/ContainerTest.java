@@ -2,8 +2,6 @@ package escapegen.model;
 
 import org.junit.Test;
 
-import java.util.LinkedList;
-
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -20,6 +18,6 @@ public class ContainerTest {
             }
         };
 
-        assertTrue(container.tryOpen(new LinkedList<>()));
+        assertTrue(container.tryOpen(null));
     }
 }

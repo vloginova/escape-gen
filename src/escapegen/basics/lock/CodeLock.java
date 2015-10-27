@@ -7,7 +7,6 @@ import escapegen.model.Tool;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Collection;
 import java.util.Random;
 
 /**
@@ -24,7 +23,7 @@ public class CodeLock extends Lock {
     }
 
     @Override
-    protected boolean unlock(Collection<Tool> bp) {
+    protected boolean unlock(Tool tool) {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Please, enter the code...");
 

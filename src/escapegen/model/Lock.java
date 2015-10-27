@@ -21,18 +21,19 @@ public abstract class Lock {
      * might be code input or some puzzle solving or nothing special,
      * just applying a key.
      *
+     * @param tool Tools to unlock the lock.
      * @return {@code true} if {@code Lock} is opened
      */
-    protected abstract boolean unlock(Collection<Tool> bp);
+    protected abstract boolean unlock(Tool tool);
 
     /**
-     * Tries to unlock {@code this} using {@code tools}
+     * Tries to unlock {@code this} using {@code tool}
      *
-     * @param tools Tools to unlock the lock.
+     * @param tool Tools to unlock the lock.
      * @return {@code true} if unlocking is succeed, {@code else} otherwise.
      */
-    public final boolean tryUnlock(Collection<Tool> tools) {
-        isUnlocked = isUnlocked || unlock(tools);
+    public final boolean tryUnlock(Tool tool) {
+        isUnlocked = isUnlocked || unlock(tool);
         return isUnlocked;
     }
 
@@ -45,7 +46,7 @@ public abstract class Lock {
 
     /**
      * Adds {@link Tool} necessary for unlocking {@code this}. This might be
-     * not only tools that have to be passed in {@link Lock#tryUnlock(Collection)}
+     * not only tools that have to be passed in {@link Lock#tryUnlock(Tool)}
      * method, but also those which contains tips (e.g. a pieces of code).
      *
      * @param tool {@link Tool}
