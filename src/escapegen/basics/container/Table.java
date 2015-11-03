@@ -1,11 +1,12 @@
 package escapegen.basics.container;
 
 import escapegen.model.Container;
+import escapegen.model.Furniture;
 
 /**
  * @author - Vita Loginova
  */
-public class Table extends Container {
+public class Table extends Furniture {
 
     public Table() {
         super("Table", Size.Medium);
@@ -18,8 +19,18 @@ public class Table extends Container {
             }
         };
 
+        Container back = new Container("TableBack", Size.Small) {
+            @Override
+            public void showContent() {
+                System.out.println("Dark and a little bit dusty.");
+                Containers.describeContent(items.values());
+            }
+        };
+
         this.putItem(topBox);
-        this.putItem(secretBox);
+
+        this.putSpace(Space.Back, back);
+        back.putItem(secretBox);
     }
 
     @Override

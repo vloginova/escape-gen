@@ -1,7 +1,9 @@
 package escapegen.model;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
 /**
  * Container can hold tools or other containers. Container represents furniture,
@@ -126,19 +128,6 @@ public abstract class Container extends Item {
      * @return {@code true} if the Container is opened, {@code false} otherwise.
      */
     public boolean isOpened() { return isOpened; }
-
-    /**
-     * Returns {@link Container#items} subset including only objects of
-     * {@link Container} type.
-     *
-     * @return List of {@link Container}s.
-     */
-    public List<Container> getContainers() {
-        return items.values().stream()
-                .filter(Container.class::isInstance)
-                .map(item -> (Container) item)
-                .collect(Collectors.toCollection(LinkedList::new));
-    }
 
     /**
      * Shows the internals.
