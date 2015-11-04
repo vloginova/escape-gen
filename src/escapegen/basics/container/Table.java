@@ -18,6 +18,7 @@ public class Table extends Furniture {
                 return topBox.isOpened();
             }
         };
+        secretBox.addDependencies(topBox);
 
         Container back = new Container("TableBack", Size.Small) {
             @Override

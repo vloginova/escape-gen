@@ -1,9 +1,6 @@
 package escapegen.model;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Container can hold tools or other containers. Container represents furniture,
@@ -16,6 +13,7 @@ public abstract class Container extends Item {
 
     protected Lock lock;
     protected Map<String, Item> items = new HashMap<>();
+    protected List<Container> depends = new LinkedList<>();
     private Container parent;
     private boolean isOpened;
 
@@ -105,6 +103,13 @@ public abstract class Container extends Item {
         return (Tool) items.remove(name);
     }
 
+    /**
+     * Gets {@link Tool} from the container.
+     *
+     * @param name The string representation of the tool.
+     * @return The corresponding {@code Tool}, {@code null} if there is no such
+     * tool.
+     */
     public Item peekItem(String name) {
         return items.get(name);
     }
@@ -134,4 +139,61 @@ public abstract class Container extends Item {
      * TODO: must be opened.
      */
     public abstract void showContent();
+
+    /**
+     * Some containers might be dependant on another. Container A depends on
+     * container B if some actions that the player is able to perform on A
+     * become available only after opening B. This relationship is transitive,
+     * asymmetric and nonreflexive.<br>
+     * <br>
+     * This information is a hint for {@link escapegen.context.Generator}
+     * necessary for avoiding unsolvable cycles. For example, in order to
+     * be able to do something with the false bottom of the box, you have to
+     * open the box. So that tools for opening the box mustn't be placed in
+     * the false bottom.
+     *
+     * @param container {@link Container} on witch this depends.
+     */
+    public void addDependencies(Container container) {
+        if (container == this)
+            throw new RuntimeException("Reflexivity is forbidden.");
+
+        if (container.dependsOn(this))
+            throw new RuntimeException("Circular dependence detected.");
+
+        depends.add(container);
+    }
+
+    /**
+     * @param tool Tool to check if its unlocking some Container on which
+     *             this depends.
+     * @return {@code true} if this depends on {@code tool}, {@code false}
+     * otherwise.
+     * @see #addDependencies(Container) for more details about dependence
+     * relationship
+     */
+    public boolean dependsOn(Tool tool) {
+        return depends.stream()
+               .reduce(false,
+                       (res, c) -> res || c.dependsOn(tool) ||
+                               c.getLockTools().contains(tool),
+                       (res1, res2) -> res1 || res2);
+    }
+
+    /**
+     * @param container Container to check if this depends on it.
+     * @return {@code true} if this depends on {@code tool}, {@code false}
+     * otherwise.
+     * @see #addDependencies(Container) for more details about dependence
+     * relationship
+     */
+    public boolean dependsOn(Container container) {
+        if (depends.contains(container))
+            return true;
+
+        return depends.stream()
+               .reduce(false,
+                       (res, c) -> res || c.dependsOn(container),
+                       (res1, res2) -> res1 || res2);
+    }
 }

@@ -2,12 +2,14 @@ package escapegen.context;
 
 import escapegen.basics.container.*;
 import escapegen.model.Container;
+import escapegen.model.Furniture;
 import escapegen.model.Item;
 import escapegen.model.Tool;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * Generator is the main class that produces the game.
@@ -61,6 +63,44 @@ public class Generator {
         return items.remove(index);
     }
 
+    private Item getRandItem(Random random, List<? extends Item> items) {
+        int index = random.nextInt(items.size());
+        return items.get(index);
+    }
+
+    private Container popPlaceTo(Random random, Tool tool, List<Container> containers) {
+        LinkedList<Container> filtered = containers.stream()
+                .filter(t -> !t.dependsOn(tool))
+                .collect(Collectors.toCollection(LinkedList::new));
+
+        if (filtered.isEmpty())
+            return null;
+
+        Container container = (Container) getRandItem(random, filtered);
+        containers.remove(container);
+        return container;
+    }
+
+    private List<Tool> locateTools(Random random, List<Tool> tools,
+                                   List<Container> containers) {
+        List<Tool> rest = new LinkedList<>();
+
+        while (!tools.isEmpty() && !containers.isEmpty()) {
+            Tool tool = (Tool) removeRandItem(random, tools);
+            Container container = popPlaceTo(random, tool, containers);
+
+            if (container == null) {
+                rest.add(tool);
+            } else {
+                container.putItem(tool);
+                tools.addAll(container.getLockTools());
+            }
+        }
+
+        rest.addAll(tools);
+        return rest;
+    }
+
     public Game generate(int bound) {
         Game game = new Game();
         Random random = game.getRandom();
@@ -82,8 +122,14 @@ public class Generator {
                 Container container = genContainer(random);
                 furniture.add(container);
 
-                List<Container> temp = new LinkedList<>(container.getContainers());
-                temp.add(container);
+                List<Container> temp = new LinkedList<>();
+
+                if (Furniture.class.isInstance(container)) {
+                    Furniture f = (Furniture) container;
+                    temp.addAll(f.getContainers());
+                } else {
+                    temp.add(container);
+                }
 
                 temp.stream().forEach(c -> {
                     if (c.getLockTools().isEmpty()) {
@@ -95,22 +141,14 @@ public class Generator {
             }
 
             /* Step 3: Locate tools in locking containers. */
-            while (!tools.isEmpty() && !withTools.isEmpty()) {
-                Tool tool = (Tool) removeRandItem(random, tools);
-                Container container = (Container) removeRandItem(random, withTools);
-                container.putItem(tool);
-                tools.addAll(container.getLockTools());
-            }
+            tools = locateTools(random, tools, withTools);
 
             /* Step 4: Locate tools in lock-free containers. */
-            while (!tools.isEmpty() && !free.isEmpty()) {
-                Tool tool = (Tool) removeRandItem(random, tools);
-                Container container = (Container) removeRandItem(random, free);
-                container.putItem(tool);
-            }
+            tools = locateTools(random, tools, free);
 
             /* Step 5: Locate tools in the inventory. */
             tools.forEach(t -> game.inventory().put(t.toString(), t));
+
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
