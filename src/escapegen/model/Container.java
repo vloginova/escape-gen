@@ -73,6 +73,10 @@ public abstract class Container extends Item {
      * @return {@code true} if opening is succeed.
      */
     public final boolean tryOpen(Tool tool) {
+        if (!isVisible()) {
+            throw new RuntimeException("Trying to open invisible object");
+        }
+
         isOpened = isOpened || lock == null || lock.tryUnlock(tool);
         return isOpened;
     }

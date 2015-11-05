@@ -19,6 +19,8 @@ public abstract class Item {
         throw new UnsupportedOperationException();
     }
 
+    public boolean isVisible() { return true; }
+
     public enum Size {
         Small, Medium, Large, RoomSize
     }

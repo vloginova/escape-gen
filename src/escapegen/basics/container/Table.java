@@ -11,7 +11,12 @@ public class Table extends Container {
         super("Table", Size.Medium);
 
         Box topBox = new Box("TopBox", Size.Small);
-        Box secretBox = new Box("SecretBox", Size.Small);
+        Box secretBox = new Box("SecretBox", Size.Small) {
+            @Override
+            public boolean isVisible() {
+                return topBox.isOpened();
+            }
+        };
 
         this.putItem(topBox);
         this.putItem(secretBox);

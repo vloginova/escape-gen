@@ -19,6 +19,7 @@ public final class Containers {
         } else {
             System.out.println("Let's see...");
             System.out.println(items.stream()
+                    .filter(Item::isVisible)
                     .map(Item::toString)
                     .collect(Collectors.joining(", ")));
         }
