@@ -8,9 +8,10 @@ import escapegen.model.Furniture;
  */
 public class Bed extends Furniture {
     public Bed() {
-        super("Bed", Size.Large);
+        super("Bed");
+        setSize(Size.Large);
 
-        Container on = new Container("On bed", Size.Small) {
+        Container on = new Container("On bed") {
             @Override
             public void examine() {
                 System.out.println("Simple blue and white bed linen.");
@@ -23,10 +24,11 @@ public class Bed extends Furniture {
             }
         };
 
+        on.setSize(Size.Small);
         on.putItem(new Pillow());
 
         this.putSpace(Space.On, on);
-        this.putSpace(Space.Under, new Container("Under bed", Size.Medium) {
+        this.putSpace(Space.Under, new Container("Under bed") {
             @Override
             public void examine() {
                 System.out.println("Dark but clean.");
@@ -53,7 +55,7 @@ public class Bed extends Furniture {
         int count = 3;
 
         public Pillow() {
-            super("Pillow", Size.Medium);
+            super("Pillow");
         }
 
         @Override

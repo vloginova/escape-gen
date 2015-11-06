@@ -8,7 +8,7 @@ import escapegen.model.Container;
 public class Bin extends Container {
 
     public Bin() {
-        super("Bin", Size.Medium);
+        super("Bin");
     }
 
     @Override

@@ -14,8 +14,8 @@ public abstract class Furniture extends Container {
 
     private Map<Space, Container> spaces = new HashMap<>();
 
-    protected Furniture(String id, Size size) {
-        super(id, size);
+    protected Furniture(String id) {
+        super(id);
     }
 
     public enum Space {

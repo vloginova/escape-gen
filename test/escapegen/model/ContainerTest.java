@@ -15,14 +15,14 @@ public class ContainerTest {
     private class TestingContainer extends Container {
 
         protected TestingContainer(String id) {
-            super(id, Size.Medium);
+            super(id);
             lock = new Lock() {
                 @Override
                 protected boolean unlock(Tool tool) {
                     return true;
                 }
             };
-            lock.addTool(new Tool(id + "Tool", Size.Small) {
+            lock.addTool(new Tool(id + "Tool") {
                 @Override
                 public void examine() {
 
@@ -41,7 +41,7 @@ public class ContainerTest {
 
     @Test
     public void testTryOpen() throws Exception {
-        Container container = new Container("TestContainer", Item.Size.Small) {
+        Container container = new Container("TestContainer") {
             @Override
             public void examine() {
 

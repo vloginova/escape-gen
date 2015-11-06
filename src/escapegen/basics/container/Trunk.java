@@ -8,7 +8,7 @@ import escapegen.model.Container;
  */
 public class Trunk extends Container {
     public Trunk() {
-        super("Trunk", Size.Medium);
+        super("Trunk");
         lock = new CodePadlock();
     }
 

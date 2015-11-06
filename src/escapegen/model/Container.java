@@ -17,8 +17,8 @@ public abstract class Container extends Item {
     private Container parent;
     private boolean isOpened;
 
-    protected Container(String id, Size size) {
-        super(id, size);
+    protected Container(String id) {
+        super(id);
         parent = this;
         isOpened = false;
     }

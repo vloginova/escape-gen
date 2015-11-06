@@ -11,7 +11,8 @@ import java.util.Collection;
 public class Room extends Container {
 
     public Room(Collection<Item> items) {
-        super("Room", Size.RoomSize);
+        super("Room");
+        setSize(Size.RoomSize);
         putAllItems(items);
     }
 

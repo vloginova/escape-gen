@@ -9,7 +9,7 @@ import escapegen.model.Container;
 public class Vault extends Container {
 
     public Vault() {
-        super("Vault", Size.Medium);
+        super("Vault");
         this.lock = new CodeLock();
     }
 

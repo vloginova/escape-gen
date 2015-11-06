@@ -10,7 +10,8 @@ public class Paper extends Tool {
     private String text;
 
     public Paper(String id, String text) {
-        super(id, Size.Small);
+        super(id);
+        setSize(Size.Small);
         this.text = text;
     }
 

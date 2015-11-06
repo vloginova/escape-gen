@@ -8,11 +8,11 @@ package escapegen.model;
 public abstract class Item {
 
     private final String id;
-    private final Size size;
+    private Size size;
 
-    protected Item(String id, Size size) {
+    protected Item(String id) {
         this.id = id;
-        this.size = size;
+        this.size = Size.Medium;
     }
 
     public abstract void examine();
@@ -25,6 +25,10 @@ public abstract class Item {
 
     public enum Size {
         Small, Medium, Large, RoomSize
+    }
+
+    public final void setSize(Size size) {
+        this.size = size;
     }
 
     @Override

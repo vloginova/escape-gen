@@ -8,7 +8,8 @@ import escapegen.model.Tool;
  */
 public class Lamp extends Tool {
     public Lamp(String id) {
-        super(id, Size.Small);
+        super(id);
+        setSize(Size.Small);
     }
 
     @Override

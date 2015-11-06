@@ -9,7 +9,8 @@ import escapegen.model.Container;
 public class Door extends Container {
 
     public Door() {
-        super("Door", Size.Large);
+        super("Door");
+        setSize(Size.Large);
         this.lock = new SimpleKeyLock("RubyKey");
     }
 

@@ -10,8 +10,8 @@ public abstract class Tool extends Item {
 
     private boolean isUsed = false;
 
-    protected Tool(String id, Size size) {
-        super(id, size);
+    protected Tool(String id) {
+        super(id);
     }
 
     public final boolean isUsed() {

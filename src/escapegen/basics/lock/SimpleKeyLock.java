@@ -10,11 +10,14 @@ import escapegen.model.Tool;
 public class SimpleKeyLock extends Lock {
 
     public SimpleKeyLock(String name) {
-        tools.put(name, new Tool(name, Item.Size.Small) {
+        Tool key = new Tool(name) {
             public void examine() {
                 System.out.println("A little key.");
             }
-        });
+        };
+        key.setSize(Item.Size.Small);
+
+        tools.put(name, key);
     }
 
     @Override

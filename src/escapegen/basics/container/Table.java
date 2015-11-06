@@ -10,18 +10,22 @@ import escapegen.model.Furniture;
 public class Table extends Furniture {
 
     public Table() {
-        super("Table", Size.Medium);
+        super("Table");
 
-        Box topBox = new Box("TopBox", Size.Small);
-        Box secretBox = new Box("SecretBox", Size.Small) {
+        Box topBox = new Box("TopBox");
+        Box secretBox = new Box("SecretBox") {
             @Override
             public boolean isVisible() {
                 return topBox.isOpened();
             }
         };
+
+        secretBox.setSize(Size.Small);
+        topBox.setSize(Size.Small);
+
         secretBox.addDependencies(topBox);
 
-        Container back = new Container("TableBack", Size.Small) {
+        Container back = new Container("TableBack") {
             @Override
             public void examine() {
                 System.out.println("Dark and a little bit dusty.");
@@ -34,6 +38,7 @@ public class Table extends Furniture {
             }
         };
 
+        back.setSize(Size.Small);
         this.putItem(topBox);
 
         this.putSpace(Space.Back, back);
@@ -52,8 +57,8 @@ public class Table extends Furniture {
 
     public class Box extends Container {
 
-        protected Box(String id, Size size) {
-            super(id, size);
+        protected Box(String id) {
+            super(id);
             this.lock = new SimpleKeyLock(id + "Key");
         }
 

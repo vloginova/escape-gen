@@ -16,7 +16,7 @@ public class LockTest {
         int count = 0;
 
         public TestingLock(String name) {
-            tools.put(name, new Tool(name, Item.Size.Small) {
+            tools.put(name, new Tool(name) {
                 @Override
                 public void examine() {
 
