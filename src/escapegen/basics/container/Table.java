@@ -39,10 +39,25 @@ public class Table extends Furniture {
         };
 
         back.setSize(Size.Small);
-        this.putItem(topBox);
-
-        this.putSpace(Space.Back, back);
         back.putItem(secretBox);
+        this.putSpace(Space.Back, back);
+
+        Container on = new Container("On Table") {
+            @Override
+            public void examine() {
+                System.out.println("Clean, contains only useful stuff.");
+            }
+
+            @Override
+            public void showContent() {
+                Containers.describeContent(items.values());
+            }
+        };
+
+        on.setMatter(Matter.Hard);
+        this.putSpace(Space.On, on);
+
+        this.putItem(topBox);
     }
 
     @Override

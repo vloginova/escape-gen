@@ -25,6 +25,7 @@ public class Bed extends Furniture {
         };
 
         on.setSize(Size.Small);
+        on.setMatter(Matter.Soft);
         on.putItem(new Pillow());
 
         this.putSpace(Space.On, on);
@@ -56,6 +57,7 @@ public class Bed extends Furniture {
 
         public Pillow() {
             super("Pillow");
+            setMatter(Matter.Soft);
         }
 
         @Override

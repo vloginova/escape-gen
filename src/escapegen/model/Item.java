@@ -17,7 +17,7 @@ public abstract class Item {
         this.id = id;
 
         size = Size.Medium;
-        matter = Matter.Hard;
+        matter = Matter.General;
         form = Form.General;
     }
 
@@ -38,10 +38,10 @@ public abstract class Item {
     }
 
     public enum Matter {
-        Hard, Soft;
+        Hard, Soft, General;
 
         private static boolean isCompatible(Matter e1, Matter e2) {
-            return e1 == e2;
+            return e1 == e2  || e1 == General;
         }
     }
 

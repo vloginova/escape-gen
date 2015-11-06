@@ -10,6 +10,7 @@ public class Lamp extends Tool {
     public Lamp(String id) {
         super(id);
         setSize(Size.Small);
+        setMatter(Matter.Hard);
     }
 
     @Override

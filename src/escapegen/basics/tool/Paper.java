@@ -12,6 +12,7 @@ public class Paper extends Tool {
     public Paper(String id, String text) {
         super(id);
         setSize(Size.Small);
+        setForm(Form.Flat);
         this.text = text;
     }
 
