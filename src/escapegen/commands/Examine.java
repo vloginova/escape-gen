@@ -1,7 +1,7 @@
 package escapegen.commands;
 
 import escapegen.context.Game;
-import escapegen.model.Tool;
+import escapegen.model.Item;
 
 /**
  * @author - Vita Loginova
@@ -15,19 +15,27 @@ public class Examine extends Command {
 
     @Override
     public void run(String... args) {
-        if (args.length != 2) {
+        if (args.length != 1 && args.length != 2) {
             System.out.println(help());
             return;
         }
 
-        Tool tool = game.inventory().get(args[1]);
-
-        if (tool == null) {
-            System.out.println("You do not have " + args[1] + ".");
+        if (args.length == 1) {
+            game.currentSpace().examine();
             return;
         }
 
-        tool.examine();
+        Item toExamine = game.currentSpace().peekItem(args[1]);
+        if (toExamine == null) {
+            toExamine = game.inventory().get(args[1]);
+        }
+
+        if (toExamine == null) {
+            System.out.println("There is no " + args[1] + ".");
+            return;
+        }
+
+        toExamine.examine();
     }
 }
 
