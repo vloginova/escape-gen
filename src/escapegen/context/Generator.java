@@ -48,6 +48,7 @@ public class Generator {
         containerClasses.add(Vault.class);
         containerClasses.add(Bin.class);
         containerClasses.add(Bed.class);
+        containerClasses.add(Trunk.class);
 
         goalClass = Door.class;
     }
