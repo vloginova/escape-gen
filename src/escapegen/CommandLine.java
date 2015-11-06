@@ -22,7 +22,7 @@ public class CommandLine {
 
         putCommand(new Back(game), new Inventory(game), new Examine(game),
                 new Lookaround(game), new Open(game), new Take(game), new Help(game),
-                new Close(game), new Look(game));
+                new Close(game), new Look(game), new Apply(game));
     }
 
     private void putCommand(Command... toPut) {

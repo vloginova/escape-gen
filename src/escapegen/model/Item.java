@@ -17,6 +17,10 @@ public abstract class Item {
 
     public abstract void examine();
 
+    public boolean apply(Item item) {
+        return false; /* nothing happened */
+    }
+
     public boolean isVisible() { return true; }
 
     public enum Size {
