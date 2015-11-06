@@ -71,7 +71,8 @@ public class Generator {
 
     private Container popPlaceTo(Random random, Tool tool, List<Container> containers) {
         LinkedList<Container> filtered = containers.stream()
-                .filter(t -> !t.dependsOn(tool))
+                .filter(c -> Item.isCompatible(tool, c))
+                .filter(c -> !c.dependsOn(tool))
                 .collect(Collectors.toCollection(LinkedList::new));
 
         if (filtered.isEmpty())
@@ -94,6 +95,7 @@ public class Generator {
                 rest.add(tool);
             } else {
                 container.putItem(tool);
+                System.out.println("Placed " + tool + " into " + container);
                 tools.addAll(container.getLockTools());
             }
         }
