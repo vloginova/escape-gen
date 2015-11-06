@@ -59,7 +59,7 @@ public class Bed extends Furniture {
         @Override
         public void showContent() {
             if (count > 0) {
-                if (--count == 0) {
+                if (--count == 0 && !items.values().isEmpty()) {
                     System.out.println("Something fell out of the pillow on a bed!");
                     this.getParent().putAllItems(items.values());
                     items.values().clear();
