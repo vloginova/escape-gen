@@ -19,4 +19,9 @@ public class Room extends Container {
     public void showContent() {
         Containers.describeContent(items.values());
     }
+
+    @Override
+    public void examine() {
+        System.out.println("A large light room. It's pretty, but I need to get out of here.");
+    }
 }

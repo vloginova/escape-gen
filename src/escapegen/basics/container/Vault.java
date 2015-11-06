@@ -17,4 +17,9 @@ public class Vault extends Container {
     public void showContent() {
         Containers.describeContent(items.values());
     }
+
+    @Override
+    public void examine() {
+        System.out.println("A solid safe with a number lock.");
+    }
 }

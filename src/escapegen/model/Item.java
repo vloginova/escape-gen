@@ -15,9 +15,7 @@ public abstract class Item {
         this.size = size;
     }
 
-    public void examine() {
-        throw new UnsupportedOperationException();
-    }
+    public abstract void examine();
 
     public boolean isVisible() { return true; }
 

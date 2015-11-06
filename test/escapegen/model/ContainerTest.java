@@ -22,16 +22,31 @@ public class ContainerTest {
                     return true;
                 }
             };
-            lock.addTool(new Tool(id + "Tool", Size.Small) { });
+            lock.addTool(new Tool(id + "Tool", Size.Small) {
+                @Override
+                public void examine() {
+
+                }
+            });
         }
 
         @Override
         public void showContent() { }
+
+        @Override
+        public void examine() {
+
+        }
     }
 
     @Test
     public void testTryOpen() throws Exception {
         Container container = new Container("TestContainer", Item.Size.Small) {
+            @Override
+            public void examine() {
+
+            }
+
             @Override
             public void showContent() {
                 /* do nothing */

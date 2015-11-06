@@ -1,5 +1,6 @@
 package escapegen.basics.container;
 
+import escapegen.basics.lock.SimpleKeyLock;
 import escapegen.model.Container;
 import escapegen.model.Furniture;
 
@@ -22,8 +23,13 @@ public class Table extends Furniture {
 
         Container back = new Container("TableBack", Size.Small) {
             @Override
-            public void showContent() {
+            public void examine() {
                 System.out.println("Dark and a little bit dusty.");
+            }
+
+            @Override
+            public void showContent() {
+                examine();
                 Containers.describeContent(items.values());
             }
         };
@@ -38,4 +44,28 @@ public class Table extends Furniture {
     public void showContent() {
         Containers.describeContent(items.values());
     }
+
+    @Override
+    public void examine() {
+        System.out.println("A big wooden table with one box. It's simple but looks comfortable.");
+    }
+
+    public class Box extends Container {
+
+        protected Box(String id, Size size) {
+            super(id, size);
+            this.lock = new SimpleKeyLock(id + "Key");
+        }
+
+        @Override
+        public void examine() {
+            System.out.println("Wooden box with a little keyhole.");
+        }
+
+        @Override
+        public void showContent() {
+            Containers.describeContent(items.values());
+        }
+    }
+
 }

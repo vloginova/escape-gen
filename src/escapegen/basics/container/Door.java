@@ -15,4 +15,9 @@ public class Door extends Container {
 
     @Override
     public void showContent() { System.out.println("Congrats!"); }
+
+    @Override
+    public void examine() {
+        System.out.println("Looks tough, don't think I can broke it. But there is a keyhole.");
+    }
 }

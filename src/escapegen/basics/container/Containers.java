@@ -17,7 +17,6 @@ public final class Containers {
         if (items.isEmpty()) {
             System.out.println("There is nothing here.");
         } else {
-            System.out.println("Let's see...");
             System.out.println(items.stream()
                     .filter(Item::isVisible)
                     .map(Item::toString)
