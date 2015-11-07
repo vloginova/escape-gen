@@ -16,7 +16,7 @@ public class LockTest {
         int count = 0;
 
         public TestingLock(String name) {
-            tools.put(name, new Tool(name) {
+            tools.add(new Tool(name) {
                 @Override
                 public void examine() {
 
@@ -27,7 +27,7 @@ public class LockTest {
         @Override
         protected boolean unlock(Tool tool) {
             count++;
-            return tools.containsValue(tool);
+            return tools.contains(tool);
         }
     }
 

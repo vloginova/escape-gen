@@ -1,8 +1,8 @@
 package escapegen.model;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Locks cannot be self-independent, they are always a part of some
@@ -14,7 +14,7 @@ import java.util.Map;
 public abstract class Lock {
 
     protected boolean isUnlocked = false;
-    protected Map<String, Tool> tools = new HashMap<>();
+    protected Collection<Tool> tools = new LinkedList<>();
 
     /**
      * Performs actions necessary for the concrete lock. For example, it
@@ -38,10 +38,10 @@ public abstract class Lock {
     }
 
     /**
-     * @return Collection of {@link Tool}s necessary for unlocking {@code this}.
+     * @return List of {@link Tool}s necessary for unlocking {@code this}.
      */
-    protected final Collection<Tool> getTools() {
-        return tools.values();
+    protected final List<Tool> getTools() {
+        return new LinkedList<>(tools);
     }
 
     /**
@@ -52,6 +52,6 @@ public abstract class Lock {
      * @param tool {@link Tool}
      */
     protected final void addTool(Tool tool) {
-        tools.put(tool.toString(), tool);
+        tools.add(tool);
     }
 }

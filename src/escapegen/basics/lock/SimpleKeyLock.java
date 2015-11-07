@@ -17,12 +17,12 @@ public class SimpleKeyLock extends Lock {
         };
         key.setSize(Item.Size.Small);
 
-        tools.put(name, key);
+        tools.add(key);
     }
 
     @Override
     protected boolean unlock(Tool tool) {
-        boolean unlocked = tools.containsValue(tool);
+        boolean unlocked = tools.contains(tool);
 
         if (unlocked)
             tool.use();
