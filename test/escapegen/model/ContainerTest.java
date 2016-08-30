@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
  * @author - Vita Loginova
  */
 public class ContainerTest {
-    private class TestingContainer extends Container {
+    private class TestingContainer extends AbstractContainer {
 
         protected TestingContainer(String id) {
             super(id);
@@ -41,7 +41,7 @@ public class ContainerTest {
 
     @Test
     public void testTryOpen() throws Exception {
-        Container container = new Container("TestContainer") {
+        AbstractContainer container = new AbstractContainer("TestContainer") {
             @Override
             public void examine() {
 
@@ -58,15 +58,15 @@ public class ContainerTest {
 
     @Test
     public void testDependsOn() throws Exception {
-        Container c1 = new TestingContainer("1");
+        AbstractContainer c1 = new TestingContainer("1");
         List<Tool> tools1 = new LinkedList<>(c1.getLockTools());
-        Container c2 = new TestingContainer("2");
+        AbstractContainer c2 = new TestingContainer("2");
         List<Tool> tools2 = new LinkedList<>(c2.getLockTools());
-        Container c3 = new TestingContainer("3");
+        AbstractContainer c3 = new TestingContainer("3");
         List<Tool> tools3 = new LinkedList<>(c3.getLockTools());
 
-        c1.addDependencies(c2);
-        c1.addDependencies(c3);
+        c1.addDependency(c2);
+        c1.addDependency(c3);
 
         assertTrue(c1.dependsOn(tools2.get(0)));
         assertTrue(c1.dependsOn(tools3.get(0)));
@@ -82,15 +82,15 @@ public class ContainerTest {
 
     @Test
     public void testDependsOnTransitive() throws Exception {
-        Container c1 = new TestingContainer("1");
+        AbstractContainer c1 = new TestingContainer("1");
         List<Tool> tools1 = new LinkedList<>(c1.getLockTools());
-        Container c2 = new TestingContainer("2");
+        AbstractContainer c2 = new TestingContainer("2");
         List<Tool> tools2 = new LinkedList<>(c2.getLockTools());
-        Container c3 = new TestingContainer("3");
+        AbstractContainer c3 = new TestingContainer("3");
         List<Tool> tools3 = new LinkedList<>(c3.getLockTools());
 
-        c1.addDependencies(c2);
-        c2.addDependencies(c3);
+        c1.addDependency(c2);
+        c2.addDependency(c3);
 
         assertTrue(c1.dependsOn(tools2.get(0)));
         assertTrue(c1.dependsOn(tools3.get(0)));
@@ -108,12 +108,12 @@ public class ContainerTest {
 
     @Test(expected = RuntimeException.class)
     public void testDependsOnCircular() throws Exception {
-        Container c1 = new TestingContainer("1");
-        Container c2 = new TestingContainer("2");
-        Container c3 = new TestingContainer("3");
+        AbstractContainer c1 = new TestingContainer("1");
+        AbstractContainer c2 = new TestingContainer("2");
+        AbstractContainer c3 = new TestingContainer("3");
 
-        c2.addDependencies(c3);
-        c1.addDependencies(c2);
-        c3.addDependencies(c1);
+        c2.addDependency(c3);
+        c1.addDependency(c2);
+        c3.addDependency(c1);
     }
 }
