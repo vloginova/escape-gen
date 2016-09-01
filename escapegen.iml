@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="Spring" name="Spring">
+      <configuration>
+        <fileset id="fileset" name="Spring Application Context" removed="false">
+          <file>file://$MODULE_DIR$/src/main/java/escapegen/text/tool/TextPaper.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/escapegen/text/lock/TextCodePadlock.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/escapegen/text/container/TextTable.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/escapegen/text/TextDescriptionConfig.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/escapegen/text/container/TextBin.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/escapegen/text/tool/TextInvisibleInkPaper.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/escapegen/text/tool/TextLamp.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/escapegen/text/container/TextTrunk.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/escapegen/text/container/TextRoom.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/escapegen/text/container/TextBed.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/escapegen/JavaConfig.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/escapegen/text/lock/TextCodeLock.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/escapegen/text/container/TextDoor.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/escapegen/text/lock/TextSimpleKeyLock.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/escapegen/text/container/TextVault.java</file>
+        </fileset>
+      </configuration>
+    </facet>
+  </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
