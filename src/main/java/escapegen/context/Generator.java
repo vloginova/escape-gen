@@ -107,7 +107,8 @@ public class Generator {
                 rest.add(tool);
             } else {
                 container.putItem(tool);
-                System.out.println("Placed " + tool + " into " + container);
+                System.out.println("Placed " + tool.getItemProperties().getId()
+                        + " into " + container.getItemProperties().getId());
                 tools.addAll(container.getLockTools());
             }
         }
@@ -161,7 +162,7 @@ public class Generator {
             tools = locateTools(random, tools, free);
 
             /* Step 5: Locate tools in the inventory. */
-            tools.forEach(t -> game.getInventory().put(t.toString(), t));
+            tools.forEach(t -> game.getInventory().put(t.getId(), t));
 
             room = genRoom(random);
             room.putAllItems(furniture);

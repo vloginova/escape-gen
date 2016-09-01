@@ -13,7 +13,6 @@ import lombok.Setter;
 @Setter
 public abstract class Tool extends AbstractItem {
     ToolDescription<?> description;
-    private ItemProperties itemProperties;
     private boolean isUsed = false;
     private boolean isVisible;
 }

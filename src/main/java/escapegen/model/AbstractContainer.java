@@ -61,7 +61,7 @@ public abstract class AbstractContainer extends AbstractItem implements Containe
      * @param item to put.
      */
     public void putItem(Item item) {
-        this.items.put(item.toString(), item);
+        this.items.put(item.getId(), item);
         if (AbstractContainer.class.isInstance(item))
             ((AbstractContainer) item).setParent(this);
     }

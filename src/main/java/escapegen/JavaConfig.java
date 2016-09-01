@@ -5,8 +5,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import javax.annotation.PostConstruct;
-
 /**
  * @author - Vita Loginova
  */
@@ -14,9 +12,4 @@ import javax.annotation.PostConstruct;
 @ComponentScan(basePackages = "escapegen")
 @Import(TextDescriptionConfig.class)
 public class JavaConfig {
-    @PostConstruct
-    void init() {
-        System.out.printf("XXXX");
-    }
-
 }

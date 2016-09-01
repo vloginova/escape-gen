@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -19,7 +20,7 @@ import java.util.Map;
 public class Game {
 
     @Getter @Setter
-    private Map<String, Tool> inventory;
+    private Map<String, Tool> inventory = new HashMap<>();
     @Getter @Setter
     private Container currentSpace;
     @Getter @Setter

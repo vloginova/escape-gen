@@ -9,8 +9,18 @@ public abstract class AbstractItem implements Item {
     private boolean isVisible = true;
 
     @Override
+    public String getId() {
+        return itemProperties.getId();
+    }
+
+    @Override
     public ItemProperties getItemProperties() {
         return itemProperties;
+    }
+
+    @Override
+    public void setItemProperties(ItemProperties itemProperties) {
+        this.itemProperties = itemProperties;
     }
 
     @Override
@@ -26,5 +36,10 @@ public abstract class AbstractItem implements Item {
     @Override
     public boolean apply(Item i) {
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 }

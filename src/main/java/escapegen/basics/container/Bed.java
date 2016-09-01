@@ -27,7 +27,6 @@ public class Bed extends Furniture {
 
     @PostConstruct
     private void configure() {
-        System.out.printf("XXXX");
         onBed.putItem(pillow);
         this.putSpace(Space.On, onBed);
         this.putSpace(Space.Under, underBed);

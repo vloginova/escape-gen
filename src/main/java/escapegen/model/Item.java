@@ -6,8 +6,10 @@ package escapegen.model;
  * @author - Vita Loginova
  */
 public interface Item {
+    String getId();
     ItemDescription<?> getDescription();
     ItemProperties getItemProperties();
+    void setItemProperties(ItemProperties properties);
 
     boolean isVisible();
     void setVisible(boolean isVisible);

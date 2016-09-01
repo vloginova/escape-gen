@@ -26,6 +26,6 @@ public class Take extends Command {
             return;
         }
 
-        game.getInventory().put(tool.toString(), tool);
+        game.getInventory().put(tool.getId(), tool);
     }
 }

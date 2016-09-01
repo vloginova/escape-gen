@@ -1,12 +1,14 @@
 package escapegen.model;
 
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NonNull;
 
 /**
  * @author - Vita Loginova
  */
 @Builder
+@Getter
 public class ItemProperties {
     @NonNull
     private String id;
@@ -43,10 +45,9 @@ public class ItemProperties {
     public static boolean isCompatible(Item innerItem, Item outerItem) {
         ItemProperties inner = innerItem.getItemProperties();
         ItemProperties outer = outerItem.getItemProperties();
-        return true;
-//        return Size.isCompatible(inner.size, outer.size) &&
-//                Matter.isCompatible(inner.matter, outer.matter) &&
-//                Shape.isCompatible(inner.shape, outer.shape);
+        return Size.isCompatible(inner.size, outer.size) &&
+                Matter.isCompatible(inner.matter, outer.matter) &&
+                Shape.isCompatible(inner.shape, outer.shape);
     }
 
 }

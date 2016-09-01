@@ -11,6 +11,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface ItemProperty {
+    String id() default "";
     ItemProperties.Size size() default ItemProperties.Size.Medium;
     ItemProperties.Matter matter() default ItemProperties.Matter.General;
     ItemProperties.Shape shape() default ItemProperties.Shape.General;

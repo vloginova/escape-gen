@@ -43,7 +43,7 @@ public class TextContainerDescription extends TextItemDescription implements Con
 
     private static String describeContentDefault(Container c) {
         return c.getItems().stream()
-                .map(Item::toString)
+                .map(Item::getId)
                 .collect(Collectors.joining(", "));
     }
 
