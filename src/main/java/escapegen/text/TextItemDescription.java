@@ -17,6 +17,9 @@ public abstract class TextItemDescription implements ItemDescription<String> {
     TextItemDescription(Function<Item, String> describeItem,
                         BiFunction<Item, Item, String> describeApplyFailed,
                         BiFunction<Item, Item, String> describeApplySucceed) {
+        if (describeItem == null)
+            throw new NullPointerException("Item description cannot be null");
+
         this.describeItem = describeItem;
         if (describeApplyFailed != null)
             this.describeApplyFailed = describeApplyFailed;

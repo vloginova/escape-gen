@@ -27,6 +27,7 @@ public class Game {
     private AbstractContainer goal;
     @Getter @Setter
     private boolean isGameOver = false;
+    @Getter
     @Resource(name = "userIOConsole")
     private UserIO<String> userIO;
     @Autowired

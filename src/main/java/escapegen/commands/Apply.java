@@ -2,40 +2,53 @@ package escapegen.commands;
 
 import escapegen.context.Game;
 import escapegen.model.Item;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author - Vita Loginova
  */
+@Component
 public class Apply extends Command {
-    public Apply(Game game) {
-        super(game, "apply", "apply one to other\n\t" +
+
+    @Autowired
+    private Game game;
+
+    public Apply() {
+        super("apply", "apply one to other\n\t" +
                 "Tries to open the specified object using tool (optional).\n\t" +
                 "Example: open table using key");
     }
 
     @Override
-    public void run(String... args) {
+    public void execute(String... args) {
         if (args.length != 4 || !args[2].equals("to")) {
-            System.out.println(help());
+            game.getUserIO().write(getHelp());
             return;
         }
 
-        Item applyWhat = game.getInventory().get(args[1]);
-        applyWhat = applyWhat == null ? game.getCurrentSpace().peekItem(args[3]) : applyWhat;
+        String applyWhatId = args[1];
+        String applyToId = args[3];
 
-        Item applyTo = game.getInventory().get(args[1]);
-        applyTo = applyTo == null ? game.getCurrentSpace().peekItem(args[3]) : applyTo;
-
+        Item applyWhat = getItemFromGameContext(applyWhatId);
         if (applyWhat == null) {
-            System.out.println("There is no " + args[3] + ".");
+            game.getUserIO().write("There is no " + applyWhatId + ".");
             return;
         }
 
+        Item applyTo = getItemFromGameContext(applyToId);
         if (applyTo == null) {
-            System.out.println("There is no " + args[1] + ".");
+            game.getUserIO().write("There is no " + applyToId + ".");
             return;
         }
 
         game.apply(applyTo, applyWhat);
+    }
+
+    private Item getItemFromGameContext(String name) {
+        Item item = game.getInventory().get(name);
+        return item == null
+                ? game.getCurrentSpace().peekItem(name)
+                : item;
     }
 }

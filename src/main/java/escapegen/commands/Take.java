@@ -2,27 +2,33 @@ package escapegen.commands;
 
 import escapegen.context.Game;
 import escapegen.model.Tool;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author - Vita Loginova
  */
+@Component
 public class Take extends Command {
 
-    public Take(Game game) {
-        super(game, "take", "take\n\tTake the specified tool from the current space.");
+    @Autowired
+    private Game game;
+
+    public Take() {
+        super("take", "take\n\tTake the specified tool from the current space.");
     }
 
     @Override
-    public void run(String... args) {
+    public void execute(String... args) {
         if (args.length != 2) {
-            System.out.println(help());
+            game.getUserIO().write(getHelp());
             return;
         }
 
         Tool tool = game.getCurrentSpace().popTool(args[1]);
 
         if (tool == null) {
-            System.out.println("There is no such thing.");
+            game.getUserIO().write("There is no such thing.");
             return;
         }
 

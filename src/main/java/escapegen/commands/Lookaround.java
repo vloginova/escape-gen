@@ -1,20 +1,26 @@
 package escapegen.commands;
 
 import escapegen.context.Game;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author - Vita Loginova
  */
+@Component
 public class Lookaround extends Command {
 
-    public Lookaround(Game game) {
-        super(game, "lookaround", "lookaround\n\tOutputs all objects reachable in the current area.");
+    @Autowired
+    private Game game;
+
+    public Lookaround() {
+        super("lookaround", "lookaround\n\tOutputs all objects reachable in the current area.");
     }
 
     @Override
-    public void run(String... args) {
+    public void execute(String... args) {
         if (args.length != 1) {
-            System.out.println(help());
+            game.getUserIO().write(getHelp());
             return;
         }
 

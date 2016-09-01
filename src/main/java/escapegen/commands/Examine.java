@@ -2,21 +2,27 @@ package escapegen.commands;
 
 import escapegen.context.Game;
 import escapegen.model.Item;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author - Vita Loginova
  */
+@Component
 public class Examine extends Command {
 
-    public Examine(Game game) {
-        super(game, "examine", "examine tool\n\t" +
-                "Examine specified tool that you have in your inventory.");
+    @Autowired
+    private Game game;
+
+    public Examine() {
+        super("examine", "examine [item]\n\t" +
+                "Examine specified item from the inventory or the current location.");
     }
 
     @Override
-    public void run(String... args) {
+    public void execute(String... args) {
         if (args.length != 1 && args.length != 2) {
-            System.out.println(help());
+            game.getUserIO().write(getHelp());
             return;
         }
 
@@ -25,13 +31,14 @@ public class Examine extends Command {
             return;
         }
 
-        Item toExamine = game.getCurrentSpace().peekItem(args[1]);
+        String itemName = args[1];
+        Item toExamine = game.getCurrentSpace().peekItem(itemName);
         if (toExamine == null) {
-            toExamine = game.getInventory().get(args[1]);
+            toExamine = game.getInventory().get(itemName);
         }
 
         if (toExamine == null) {
-            System.out.println("There is no " + args[1] + ".");
+            game.getUserIO().write("There is no " + itemName + ".");
             return;
         }
 

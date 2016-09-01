@@ -12,9 +12,9 @@ import java.util.function.Function;
  * @author - Vita Loginova
  */
 public class TextLockDescription extends TextItemDescription implements LockDescription<String> {
-    private Function<Lock, String> describeBeforeUnlocking;
-    private Function<Lock, String> describeUnlockingFailed;
-    private Function<Lock, String> describeUnlockingSucceed;
+    private Function<Lock, String> describeBeforeUnlocking = l -> "";
+    private Function<Lock, String> describeUnlockingFailed = l -> "Something went wrong";
+    private Function<Lock, String> describeUnlockingSucceed = l -> "*clank*";
 
     @Builder
     private TextLockDescription(Function<Item, String> describeItem,
@@ -24,9 +24,12 @@ public class TextLockDescription extends TextItemDescription implements LockDesc
                         Function<Lock, String> describeUnlockingFailed,
                         Function<Lock, String> describeUnlockingSucceed) {
         super(describeItem, describeApplyFailed, describeApplySucceed);
-        this.describeBeforeUnlocking = describeBeforeUnlocking;
-        this.describeUnlockingFailed = describeUnlockingFailed;
-        this.describeUnlockingSucceed = describeUnlockingSucceed;
+        if (describeBeforeUnlocking != null)
+            this.describeBeforeUnlocking = describeBeforeUnlocking;
+        if (describeUnlockingFailed != null)
+            this.describeUnlockingFailed = describeUnlockingFailed;
+        if (describeApplySucceed != null)
+            this.describeUnlockingSucceed = describeUnlockingSucceed;
     }
 
     @Override

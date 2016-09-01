@@ -3,22 +3,28 @@ package escapegen.commands;
 import escapegen.context.Game;
 import escapegen.model.AbstractContainer;
 import escapegen.model.Item;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author - Vita Loginova
  */
+@Component
 public class Close extends Command {
 
-    public Close(Game game) {
-        super(game, "close", "close [container]\n\t" +
+    @Autowired
+    private Game game;
+
+    public Close() {
+        super("close", "close [container]\n\t" +
                 "Closes current container or, if parameter [container] is specified,\n\t" +
                 "closes [container] which belongs to current.");
     }
 
     @Override
-    public void run(String... args) {
+    public void execute(String... args) {
         if (args.length != 1 && args.length != 2) {
-            System.out.println(help());
+            game.getUserIO().write(getHelp());
             return;
         }
 
@@ -31,7 +37,7 @@ public class Close extends Command {
         Item toClose = game.getCurrentSpace().peekItem(args[1]);
 
         if (toClose == null || !AbstractContainer.class.isInstance(toClose)) {
-            System.out.println("There is no such container.");
+            game.getUserIO().write("There is no such container.");
             return;
         }
 

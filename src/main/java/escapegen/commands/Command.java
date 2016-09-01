@@ -1,6 +1,6 @@
 package escapegen.commands;
 
-import escapegen.context.Game;
+import lombok.Getter;
 
 /**
  * {@code Command} represents the abstraction for control the game via
@@ -10,21 +10,17 @@ import escapegen.context.Game;
  */
 public abstract class Command {
 
+    @Getter
     private final String name;
+    @Getter
     private final String help;
-    protected Game game;
 
-    protected Command(Game game, String name, String help) {
-        if (name == null || help == null || game == null)
+    protected Command(String name, String help) {
+        if (name == null || help == null)
             throw new NullPointerException();
 
         this.name = name;
         this.help = help;
-        this.game = game;
-    }
-
-    public final String help() {
-        return help;
     }
 
     @Override
@@ -32,5 +28,5 @@ public abstract class Command {
         return name;
     }
 
-    public abstract void run(String... args);
+    public abstract void execute(String... args);
 }

@@ -2,21 +2,27 @@ package escapegen.commands;
 
 import escapegen.context.Game;
 import escapegen.model.Container;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author - Vita Loginova
  */
+@Component
 public class Back extends Command {
 
-    public Back(Game game) {
-        super(game, "back", "back [level]\n\tGo back on less specific level.\n\t" +
+    @Autowired
+    private Game game;
+
+    public Back() {
+        super("back", "back [level]\n\tGo back on less specific level.\n\t" +
                 "Set [level] to apply this command [level] times.");
     }
 
     @Override
-    public void run(String... args) {
+    public void execute(String... args) {
         if (args.length != 1 && args.length != 2) {
-            System.out.println(help());
+            game.getUserIO().write(getHelp());
             return;
         }
 
@@ -25,7 +31,7 @@ public class Back extends Command {
             try {
                 back = Integer.parseInt(args[1]);
             } catch (NumberFormatException e) {
-                System.out.println(help());
+                game.getUserIO().write(getHelp());
                 return;
             }
         }

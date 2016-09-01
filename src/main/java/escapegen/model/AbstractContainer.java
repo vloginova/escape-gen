@@ -107,7 +107,7 @@ public abstract class AbstractContainer extends AbstractItem implements Containe
             throw new RuntimeException("Trying to open invisible object");
         }
 
-        isOpened = isOpened || lock == null;
+        isOpened = isOpened || lock == null || lock.isUnlocked();
         return isOpened;
     }
 

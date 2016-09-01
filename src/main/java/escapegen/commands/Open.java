@@ -4,34 +4,40 @@ import escapegen.context.Game;
 import escapegen.model.AbstractContainer;
 import escapegen.model.Item;
 import escapegen.model.Tool;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author - Vita Loginova
  */
+@Component
 public class Open extends Command {
 
-    public Open(Game game) {
-        super(game, "open", "open object [using tool]\n\t" +
-                "Tries to open the specified object using tool (optional).\n\t" +
+    @Autowired
+    private Game game;
+
+    public Open() {
+        super("open", "open container [using tool]\n\t" +
+                "Tries to open the specified container using tool (optional).\n\t" +
                 "Example: open table using key");
     }
 
     @Override
-    public void run(String... args) {
+    public void execute(String... args) {
         if (args.length != 2 && !(args.length == 4 && args[2].equals("using"))) {
-            System.out.println(help());
+            game.getUserIO().write(getHelp());
             return;
         }
 
         Item openTo = game.getCurrentSpace().peekItem(args[1]);
 
         if (openTo == null) {
-            System.out.println("There is no " + args[1] + ".");
+            game.getUserIO().write("There is no " + args[1] + ".");
             return;
         }
 
         if (!AbstractContainer.class.isInstance(openTo)) {
-            System.out.println("Cannot be opened at all.");
+            game.getUserIO().write("Cannot be opened at all.");
             return;
         }
 
@@ -40,7 +46,7 @@ public class Open extends Command {
         if (args.length == 4) {
             tool = game.getInventory().get(args[3]);
             if (tool == null) {
-                System.out.println("There is no " + args[3] + ".");
+                game.getUserIO().write("There is no " + args[3] + ".");
                 return;
             }
         }

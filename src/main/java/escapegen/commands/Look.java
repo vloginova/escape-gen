@@ -4,14 +4,20 @@ import escapegen.context.Game;
 import escapegen.model.AbstractContainer;
 import escapegen.model.Furniture;
 import escapegen.model.Item;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author - Vita Loginova
  */
+@Component
 public class Look extends Command {
 
-    public Look(Game game) {
-        super(game, "look", "look side furniture\n\t" +
+    @Autowired
+    private Game game;
+
+    public Look() {
+        super("look", "look side furniture\n\t" +
                 "Use it for looking into some space of the furniture.\n\t" +
                 "Try those from the following list:\n\t" +
                 "\ton, under, left, right, back\n\t" +
@@ -19,9 +25,9 @@ public class Look extends Command {
     }
 
     @Override
-    public void run(String... args) {
+    public void execute(String... args) {
         if (args.length != 3) {
-            System.out.println(help());
+            game.getUserIO().write(getHelp());
             return;
         }
 
@@ -31,7 +37,7 @@ public class Look extends Command {
         Item lookTo = game.getCurrentSpace().peekItem(furnitureString);
 
         if (lookTo == null) {
-            System.out.println("There is no " + furnitureString);
+            game.getUserIO().write("There is no " + furnitureString);
             return;
         }
 
@@ -53,19 +59,19 @@ public class Look extends Command {
                 space = Furniture.Space.Under;
                 break;
             default:
-                System.out.println("There is no such space.");
+                game.getUserIO().write("There is no such space.");
                 return;
         }
 
         if (!Furniture.class.isInstance(lookTo)) {
-            System.out.println("Can't look there.");
+            game.getUserIO().write("Can't look there.");
             return;
         }
 
         AbstractContainer container = ((Furniture) lookTo).getSpace(space);
 
         if (container == null) {
-            System.out.println("Can't look there.");
+            game.getUserIO().write("Can't look there.");
             return;
         }
 
