@@ -23,12 +23,12 @@ public class Close extends Command {
         }
 
         if (args.length == 1) {
-            game.currentSpace().close();
-            game.setCurrentSpace(game.currentSpace().getParent());
+            game.getCurrentSpace().close();
+            game.setCurrentSpace(game.getCurrentSpace().getParent());
             return;
         }
 
-        Item toClose = game.currentSpace().peekItem(args[1]);
+        Item toClose = game.getCurrentSpace().peekItem(args[1]);
 
         if (toClose == null || !AbstractContainer.class.isInstance(toClose)) {
             System.out.println("There is no such container.");

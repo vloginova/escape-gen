@@ -8,7 +8,7 @@ import javax.annotation.PostConstruct;
 /**
  * @author - Vita Loginova
  */
-@RootContainer
+@Basic
 @ItemProperty(size = ItemProperties.Size.Large)
 public class Bed extends Furniture {
 
@@ -27,11 +27,13 @@ public class Bed extends Furniture {
 
     @PostConstruct
     private void configure() {
+        System.out.printf("XXXX");
         onBed.putItem(pillow);
         this.putSpace(Space.On, onBed);
         this.putSpace(Space.Under, underBed);
     }
 
+    @Reusable
     @ItemProperty(size = ItemProperties.Size.Small, matter = ItemProperties.Matter.Soft)
     public class OnBed extends AbstractContainer {
         @ViewFor(OnBed.class)
@@ -41,6 +43,7 @@ public class Bed extends Furniture {
         }
     }
 
+    @Reusable
     @ItemProperty
     public class UnderBed extends AbstractContainer {
         @ViewFor(UnderBed.class)
@@ -50,6 +53,7 @@ public class Bed extends Furniture {
         }
     }
 
+    @Reusable
     @ItemProperty(matter = ItemProperties.Matter.Soft)
     public class Pillow extends AbstractContainer {
         private int count = 3;

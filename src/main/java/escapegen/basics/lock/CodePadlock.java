@@ -2,7 +2,6 @@ package escapegen.basics.lock;
 
 import escapegen.basics.tool.InvisibleInkPaper;
 import escapegen.basics.tool.Lamp;
-import escapegen.context.UserIO;
 import escapegen.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,6 +11,7 @@ import java.util.Random;
 /**
  * @author - Vita Loginova
  */
+@Reusable
 @ItemProperty
 public class CodePadlock extends Lock {
     String code;
@@ -37,7 +37,7 @@ public class CodePadlock extends Lock {
 
     @Override
     protected boolean unlock(Tool tool) {
-        String inCode = UserIO.getInstance().readLine();
-        return inCode.equals(code);
+       // String inCode = UserIOConsole.getInstance().readLine();
+        return true;// inCode.equals(code);
     }
 }

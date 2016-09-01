@@ -5,6 +5,7 @@ import escapegen.model.*;
 /**
  * @author - Vita Loginova
  */
+@Reusable
 @ItemProperty(size = ItemProperties.Size.Small, matter = ItemProperties.Matter.Hard)
 public class Lamp extends Tool {
     @ViewFor(Lamp.class)

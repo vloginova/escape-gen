@@ -21,13 +21,13 @@ public class Examine extends Command {
         }
 
         if (args.length == 1) {
-            game.examineItem(game.currentSpace());
+            game.examineItem(game.getCurrentSpace());
             return;
         }
 
-        Item toExamine = game.currentSpace().peekItem(args[1]);
+        Item toExamine = game.getCurrentSpace().peekItem(args[1]);
         if (toExamine == null) {
-            toExamine = game.inventory().get(args[1]);
+            toExamine = game.getInventory().get(args[1]);
         }
 
         if (toExamine == null) {

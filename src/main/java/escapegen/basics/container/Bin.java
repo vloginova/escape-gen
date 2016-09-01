@@ -5,7 +5,7 @@ import escapegen.model.*;
 /**
  * @author - Vita Loginova
  */
-@RootContainer
+@Basic
 @ItemProperty
 public class Bin extends AbstractContainer {
     @ViewFor(Bin.class)

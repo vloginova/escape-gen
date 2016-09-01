@@ -9,7 +9,7 @@ import javax.annotation.PostConstruct;
 /**
  * @author - Vita Loginova
  */
-@RootContainer
+@Basic
 @ItemProperty
 public class Trunk extends AbstractContainer {
     @Autowired

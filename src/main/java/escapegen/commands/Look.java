@@ -28,7 +28,7 @@ public class Look extends Command {
         String spaceString = args[1];
         String furnitureString = args[2];
 
-        Item lookTo = game.currentSpace().peekItem(furnitureString);
+        Item lookTo = game.getCurrentSpace().peekItem(furnitureString);
 
         if (lookTo == null) {
             System.out.println("There is no " + furnitureString);

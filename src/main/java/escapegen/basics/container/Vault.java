@@ -9,7 +9,7 @@ import javax.annotation.PostConstruct;
 /**
  * @author - Vita Logniva
  */
-@RootContainer
+@Basic
 @ItemProperty
 public class Vault extends AbstractContainer {
     @Autowired

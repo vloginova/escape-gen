@@ -1,7 +1,6 @@
 package escapegen.basics.lock;
 
 import escapegen.basics.tool.Paper;
-import escapegen.context.UserIO;
 import escapegen.model.*;
 
 import javax.annotation.PostConstruct;
@@ -11,6 +10,7 @@ import java.util.Random;
 /**
  * @author - Vita Loginova
  */
+@Reusable
 @ItemProperty
 public class CodeLock extends Lock {
 
@@ -37,7 +37,8 @@ public class CodeLock extends Lock {
 
     @Override
     protected boolean unlock(Tool tool) {
-        String inCode = UserIO.getInstance().readLine();
-        return inCode.equals(String.format("%04d", code));
+//        String inCode = UserIOConsole.getInstance().readLine();
+//        return inCode.equals(String.format("%04d", code));
+        return true;
     }
 }

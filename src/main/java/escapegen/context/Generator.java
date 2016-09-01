@@ -38,16 +38,18 @@ import java.util.stream.Collectors;
 @Component
 public class Generator {
     @Autowired
-    ApplicationContext context;
+    private ApplicationContext context;
 
-    List<String> goals;
-    List<String> rootContainers;
-    List<String> rooms;
+    private List<String> goals;
+    private List<String> rootContainers;
+    private List<String> rooms;
+
+    private final Random random = new Random();
 
     @PostConstruct
     public void configure() {
         goals = new ArrayList<>(Arrays.asList(context.getBeanNamesForAnnotation(Goal.class)));
-        rootContainers = new ArrayList<>(Arrays.asList(context.getBeanNamesForAnnotation(RootContainer.class)));
+        rootContainers = new ArrayList<>(Arrays.asList(context.getBeanNamesForAnnotation(Basic.class)));
         rooms = new ArrayList<>(Arrays.asList(context.getBeanNamesForAnnotation(escapegen.model.Room.class)));
     }
 
@@ -114,9 +116,7 @@ public class Generator {
         return rest;
     }
 
-    public Game generate(int bound) {
-        Game game = new Game();
-        Random random = game.getRandom();
+    public Game generate(Game game, int bound) {
         List<Item> furniture = new LinkedList<>();
         AbstractContainer room;
 
@@ -145,7 +145,7 @@ public class Generator {
                     temp.add(container);
                 }
 
-                temp.stream().forEach(c -> {
+                temp.forEach(c -> {
                     if (c.getLockTools().isEmpty()) {
                         free.add(c);
                     } else {
@@ -161,7 +161,7 @@ public class Generator {
             tools = locateTools(random, tools, free);
 
             /* Step 5: Locate tools in the inventory. */
-            tools.forEach(t -> game.inventory().put(t.toString(), t));
+            tools.forEach(t -> game.getInventory().put(t.toString(), t));
 
             room = genRoom(random);
             room.putAllItems(furniture);

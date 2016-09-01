@@ -7,6 +7,7 @@ import lombok.Setter;
 /**
  * @author - Vita Loginova
  */
+@Reusable
 @ItemProperty(size = ItemProperties.Size.Small, shape = ItemProperties.Shape.Flat)
 public class Paper extends Tool {
     @Getter

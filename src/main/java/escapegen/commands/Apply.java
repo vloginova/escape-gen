@@ -20,11 +20,11 @@ public class Apply extends Command {
             return;
         }
 
-        Item applyWhat = game.inventory().get(args[1]);
-        applyWhat = applyWhat == null ? game.currentSpace().peekItem(args[3]) : applyWhat;
+        Item applyWhat = game.getInventory().get(args[1]);
+        applyWhat = applyWhat == null ? game.getCurrentSpace().peekItem(args[3]) : applyWhat;
 
-        Item applyTo = game.inventory().get(args[1]);
-        applyTo = applyTo == null ? game.currentSpace().peekItem(args[3]) : applyTo;
+        Item applyTo = game.getInventory().get(args[1]);
+        applyTo = applyTo == null ? game.getCurrentSpace().peekItem(args[3]) : applyTo;
 
         if (applyWhat == null) {
             System.out.println("There is no " + args[3] + ".");

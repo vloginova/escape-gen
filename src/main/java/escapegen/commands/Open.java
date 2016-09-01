@@ -23,7 +23,7 @@ public class Open extends Command {
             return;
         }
 
-        Item openTo = game.currentSpace().peekItem(args[1]);
+        Item openTo = game.getCurrentSpace().peekItem(args[1]);
 
         if (openTo == null) {
             System.out.println("There is no " + args[1] + ".");
@@ -38,7 +38,7 @@ public class Open extends Command {
         Tool tool = null;
 
         if (args.length == 4) {
-            tool = game.inventory().get(args[3]);
+            tool = game.getInventory().get(args[3]);
             if (tool == null) {
                 System.out.println("There is no " + args[3] + ".");
                 return;
@@ -51,13 +51,13 @@ public class Open extends Command {
         }
 
         if (tool != null && tool.isUsed())
-            game.inventory().remove(args[3]);
+            game.getInventory().remove(args[3]);
 
         game.showContent(c);
         game.setCurrentSpace(c);
 
         if (game.getGoal() == c) {
-            game.endGame();
+            game.setGameOver(true);
         }
     }
 }

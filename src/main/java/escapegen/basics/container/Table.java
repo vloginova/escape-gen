@@ -9,7 +9,7 @@ import javax.annotation.PostConstruct;
 /**
  * @author - Vita Loginova
  */
-@RootContainer
+@Basic
 @ItemProperty
 public class Table extends Furniture {
 
@@ -38,6 +38,7 @@ public class Table extends Furniture {
         super.setDescription(description);
     }
 
+    @Reusable
     @ItemProperty(size = ItemProperties.Size.Small)
     public class Box extends AbstractContainer {
         @Autowired
@@ -55,6 +56,7 @@ public class Table extends Furniture {
         }
     }
 
+    @Reusable
     @ItemProperty(size = ItemProperties.Size.Small)
     public class SecretBox extends AbstractContainer {
         @Autowired
@@ -77,6 +79,7 @@ public class Table extends Furniture {
         }
     }
 
+    @Reusable
     @ItemProperty(size = ItemProperties.Size.Small)
     public class TableBack extends AbstractContainer {
         @ViewFor(TableBack.class)
@@ -86,6 +89,7 @@ public class Table extends Furniture {
         }
     }
 
+    @Reusable
     @ItemProperty(matter = ItemProperties.Matter.Hard)
     public class OnTable extends AbstractContainer {
         @ViewFor(OnTable.class)

@@ -18,6 +18,6 @@ public class Lookaround extends Command {
             return;
         }
 
-        game.showContent(game.currentSpace());
+        game.showContent(game.getCurrentSpace());
     }
 }

@@ -18,6 +18,6 @@ public class Inventory extends Command {
             return;
         }
 
-        game.inventory().values().forEach(i -> game.examineItem(i));
+        game.getInventory().values().forEach(i -> game.examineItem(i));
     }
 }

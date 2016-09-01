@@ -30,10 +30,22 @@ public class CommandLine {
             commands.put(c.toString(), c);
     }
 
+    public void executeCommand(String command) {
+        String[] args = command.split(" ");
+
+        Command c = commands.get(args[0]);
+
+        if (c != null) {
+            c.run(args);
+        } else {
+            System.out.println("Wrong command. Try 'help'");
+        }
+    }
+
     public void start() {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
-            while (!game.isOver()) {
-                System.out.print(game.currentSpace().toString() + "> ");
+            while (!game.isGameOver()) {
+                System.out.print(game.getCurrentSpace().toString() + "> ");
                 String command = br.readLine();
 
                 if (command.equals("exit"))

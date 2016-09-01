@@ -1,62 +1,43 @@
 package escapegen.context;
 
 import escapegen.model.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.util.Map;
-import java.util.Random;
 
 /**
  * Game represents the whole context for the concrete game.
  *
  * @author - Vita Loginova
  */
+@Component
 public class Game {
 
+    @Getter @Setter
     private Map<String, Tool> inventory;
+    @Getter @Setter
     private Container currentSpace;
+    @Getter @Setter
     private AbstractContainer goal;
+    @Getter @Setter
     private boolean isGameOver = false;
-    private Random rand;
-    private UserIO userIO = UserIO.getInstance();
+    @Resource(name = "userIOConsole")
+    private UserIO<String> userIO;
+    @Autowired
+    private Generator generator;
 
-    public Game() {
-        inventory = new HashMap<>();
-        rand = new Random();
-    }
-
-    public Map<String, Tool> inventory() {
-        return inventory;
-    }
-
-    public Container currentSpace() {
-        return currentSpace;
-    }
-
-    public void setCurrentSpace(Container container) {
-        currentSpace = container;
-    }
-
-    public boolean isOver() {
-        return isGameOver;
-    }
-
-    public void endGame() {
-        isGameOver = true;
-    }
-
-    public Random getRandom() { return rand; }
-
-    public AbstractContainer getGoal() {
-        return goal;
-    }
-
-    public void setGoal(AbstractContainer goal) {
-        this.goal = goal;
+    @PostConstruct
+    private void init() {
+        generator.generate(this, 5);
     }
 
     public void examineItem(Item i) {
-        userIO.writeString(i.getDescription().describeItem(i).toString());
+        userIO.write(i.getDescription().describeItem(i).toString());
     }
 
     private boolean unlock(Lock l, Tool t) {
@@ -67,12 +48,12 @@ public class Game {
         if (l.isUnlocked())
             return true;
 
-        userIO.writeString(lockDescription.describeBeforeUnlocking(l).toString());
+        userIO.write(lockDescription.describeBeforeUnlocking(l).toString());
         boolean result = l.tryUnlock(t);
         if (result)
-            userIO.writeString(lockDescription.describeUnlockingSucceed(l).toString());
+            userIO.write(lockDescription.describeUnlockingSucceed(l).toString());
         else
-            userIO.writeString(lockDescription.describeUnlockingFailed(l).toString());
+            userIO.write(lockDescription.describeUnlockingFailed(l).toString());
         return result;
     }
 
@@ -84,17 +65,17 @@ public class Game {
         AbstractContainer container = (AbstractContainer) c;
         ContainerDescription<?> description = container.getDescription();
         if (c.isEmpty())
-            userIO.writeString(description.describeEmptyContent(c).toString());
+            userIO.write(description.describeEmptyContent(c).toString());
         else
-            userIO.writeString( description.describeContent(c).toString());
+            userIO.write(description.describeContent(c).toString());
     }
 
     public void apply(Item main, Item applied) {
         ItemDescription<?> description = main.getDescription();
         boolean applyResult = main.apply(applied);
         if (applyResult)
-            userIO.writeString(description.describeApplySucceed(main, applied).toString());
+            userIO.write(description.describeApplySucceed(main, applied).toString());
         else
-            userIO.writeString(description.describeApplyFailed(main, applied).toString());
+            userIO.write(description.describeApplyFailed(main, applied).toString());
     }
 }

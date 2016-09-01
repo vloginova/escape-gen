@@ -30,7 +30,7 @@ public class Back extends Command {
             }
         }
 
-        Container currentSpace = game.currentSpace();
+        Container currentSpace = game.getCurrentSpace();
 
         while (back-- > 0) {
             Container parent = currentSpace.getParent();

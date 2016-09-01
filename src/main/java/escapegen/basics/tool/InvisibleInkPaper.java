@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 /**
  * @author - Vita Loginova
  */
+@Reusable
 @ItemProperty(size = ItemProperties.Size.Small, shape = ItemProperties.Shape.Flat)
 public class InvisibleInkPaper extends Paper {
     @Setter
