@@ -1,15 +1,18 @@
 package escapegen.context;
 
+import escapegen.context.configuration.GameConfig;
 import escapegen.model.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Game represents the whole context for the concrete game.
@@ -17,6 +20,7 @@ import java.util.Map;
  * @author - Vita Loginova
  */
 @Component
+@Scope
 public class Game {
 
     @Getter @Setter
@@ -24,7 +28,9 @@ public class Game {
     @Getter @Setter
     private Container currentSpace;
     @Getter @Setter
-    private AbstractContainer goal;
+    private Container room;
+    @Getter @Setter
+    private Container goal;
     @Getter @Setter
     private boolean isGameOver = false;
     @Getter
@@ -32,10 +38,12 @@ public class Game {
     private UserIO<String> userIO;
     @Autowired
     private Generator generator;
+    @Autowired
+    private ConfigLoader configLoader;
 
     @PostConstruct
     private void init() {
-        generator.generate(this, 5);
+        generator.loadGame(this, 5);
     }
 
     public void examineItem(Item i) {
@@ -91,5 +99,15 @@ public class Game {
             builder.insert(0, container.getId());
         }
         return builder.toString();
+    }
+
+    public GameConfig getConfiguration() {
+        GameConfig config = new GameConfig();
+        config.setRoomBeanClassName(getRoom().getClass().getName());
+        config.setGoalBeanClassName(getGoal().getClass().getName());
+        config.setBasicsBeanClassNames(room.getItems().stream()
+                .map(i -> i.getClass().getName())
+                .collect(Collectors.toList()));
+        return config;
     }
 }
