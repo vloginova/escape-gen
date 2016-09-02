@@ -28,7 +28,7 @@ public class Game {
     @Getter @Setter
     private boolean isGameOver = false;
     @Getter
-    @Resource(name = "userIOConsole")
+    @Resource(name = "userIOWeb")
     private UserIO<String> userIO;
     @Autowired
     private Generator generator;
@@ -79,5 +79,17 @@ public class Game {
             userIO.write(description.describeApplySucceed(main, applied).toString());
         else
             userIO.write(description.describeApplyFailed(main, applied).toString());
+    }
+
+    public String getPathToCurrentLocation() {
+        StringBuilder builder = new StringBuilder();
+        Container container = getCurrentSpace();
+        builder.append(container.getId());
+        while (container.getParent() != container) {
+            container = container.getParent();
+            builder.insert(0, "/");
+            builder.insert(0, container.getId());
+        }
+        return builder.toString();
     }
 }

@@ -28,6 +28,8 @@ public class CommandExecutor {
     }
 
     public void executeCommand(String command) {
+        echo(command);
+
         String[] args = command.trim().split(" ");
 
         Command c = commands.get(args[0]);
@@ -37,6 +39,10 @@ public class CommandExecutor {
         } else {
             game.getUserIO().write("Wrong command. Try 'help'");
         }
+    }
+
+    private void echo(String command) {
+        game.getUserIO().write(game.getPathToCurrentLocation() + " > " + command);
     }
 
     @Component

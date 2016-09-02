@@ -62,7 +62,7 @@ public abstract class AbstractContainer extends AbstractItem implements Containe
      */
     public void putItem(Item item) {
         this.items.put(item.getId(), item);
-        if (AbstractContainer.class.isInstance(item))
+        if (item instanceof AbstractContainer)
             ((AbstractContainer) item).setParent(this);
     }
 
