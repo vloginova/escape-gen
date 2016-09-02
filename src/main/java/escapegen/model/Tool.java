@@ -14,5 +14,4 @@ import lombok.Setter;
 public abstract class Tool extends AbstractItem {
     ToolDescription<?> description;
     private boolean isUsed = false;
-    private boolean isVisible;
 }

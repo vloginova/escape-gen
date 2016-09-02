@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * AbstractContainer can hold tools or other containers. AbstractContainer represents furniture,
@@ -18,7 +19,7 @@ public abstract class AbstractContainer extends AbstractItem implements Containe
     ContainerDescription<?> description;
     protected Lock lock;
     protected Map<String, Item> items = new HashMap<>();
-    protected List<AbstractContainer> depends = new LinkedList<>();
+    private List<AbstractContainer> depends = new LinkedList<>();
     private AbstractContainer parent;
     private boolean isOpened;
 
@@ -27,17 +28,20 @@ public abstract class AbstractContainer extends AbstractItem implements Containe
         isOpened = false;
     }
 
+    private Collection<Item> getVisibleItems() {
+        return items.values().stream().filter(Item::isVisible).collect(Collectors.toList());
+    }
+
     @Override
     public Collection<Item> getItems() {
-        //TODO
-        return items.values();
+        return getVisibleItems();
     }
 
     @Override
     public Collection<Item> removeItems() {
-        //todo
-        items.clear();
-        return items.values();
+        List<Item> removed = new ArrayList<>();
+        getVisibleItems().forEach(i -> removed.add(items.remove(i.getId())));
+        return removed;
     }
 
     public Lock getLock() {
@@ -50,8 +54,7 @@ public abstract class AbstractContainer extends AbstractItem implements Containe
 
     @Override
     public boolean isEmpty() {
-        //todo
-        return items.isEmpty();
+        return getVisibleItems().isEmpty();
     }
 
     /**
@@ -126,7 +129,7 @@ public abstract class AbstractContainer extends AbstractItem implements Containe
      */
     public Tool popTool(String name) {
         Item item = items.get(name);
-        if (item == null || !Tool.class.isInstance(item))
+        if (item == null || !item.isVisible() || !(item instanceof Tool))
             return null;
 
         return (Tool) items.remove(name);
@@ -139,6 +142,9 @@ public abstract class AbstractContainer extends AbstractItem implements Containe
      * @return The corresponding {@code Item}, {@code null} if there is no such tool.
      */
     public Item peekItem(String name) {
+        Item item = items.get(name);
+        if (item != null && !item.isVisible())
+            return null;
         return items.get(name);
     }
 
