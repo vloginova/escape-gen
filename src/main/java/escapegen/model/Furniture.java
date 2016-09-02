@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  */
 public abstract class Furniture extends AbstractContainer {
 
-    private Map<Space, AbstractContainer> spaces = new HashMap<>();
+    protected Map<Space, AbstractContainer> spaces = new HashMap<>();
 
     public enum Space {
         Under, On, LeftSide, RightSide, Back

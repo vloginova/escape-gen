@@ -40,7 +40,7 @@ public class GameController {
     @RequestMapping("/load/{id}")
     public @ResponseBody String loadGame(@PathVariable("id") String id) {
         GameConfig config = repository.findByConfigId(id);
-        /* todo somehow apply this */
+        game.loadGame(config);
         return objectToJson(createResponse());
     }
 
@@ -54,7 +54,7 @@ public class GameController {
 
     @RequestMapping("/generate")
     public @ResponseBody String generateGame() {
-        /* todo somehow apply this */
+        game.loadGame();
         GameStateResponse response = new GameStateResponse();
         response.setCurrentLocation(game.getPathToCurrentLocation());
         response.setResponse(io.retrieveBufferedData());

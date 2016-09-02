@@ -3,13 +3,13 @@ package escapegen.context;
 import escapegen.context.configuration.GameConfig;
 import escapegen.model.AbstractContainer;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ClassUtils;
 
-import javax.annotation.PostConstruct;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -21,8 +21,6 @@ import java.util.Random;
 public class ConfigLoader extends GameLoaderImpl {
     @Autowired
     private ApplicationContext context;
-    @Setter
-    private GameConfig config;
 
     private List<String> goals;
     private List<String> rootContainers;
@@ -30,15 +28,19 @@ public class ConfigLoader extends GameLoaderImpl {
 
     private final Random random = new Random();
 
-    @PostConstruct
-    public void configure() {
-//        goals = Collections.singletonList(config.getGoalBeanClassName());
-//        rooms = Collections.singletonList(config.getRoomBeanClassName());
-//        rootContainers = new LinkedList<>(config.getBasicsBeanClassNames());
+    public void configure(GameConfig config) {
+        if (config == null)
+            throw new NullPointerException("Config cannot be null");
+        goals = new LinkedList<>();
+        goals.add(config.getGoalBeanClassName());
+        rooms = new LinkedList<>();
+        rooms.add(config.getRoomBeanClassName());
+        rootContainers = new LinkedList<>(config.getBasicsBeanClassNames());
     }
 
+    @SneakyThrows
     private AbstractContainer getByName(String className) {
-        Class<?> type = ClassUtils.resolveClassName(className, ClassLoader.getSystemClassLoader());
+        Class<?> type = Class.forName(className);
         return (AbstractContainer) context.getBean(type);
     }
 
@@ -60,5 +62,10 @@ public class ConfigLoader extends GameLoaderImpl {
     @Override
     protected boolean isContainersEmpty() {
         return rootContainers.isEmpty();
+    }
+
+    public static void main(String[] args) {
+        AnnotationConfigApplicationContext c = new AnnotationConfigApplicationContext("escapegen");
+        System.out.println();
     }
 }

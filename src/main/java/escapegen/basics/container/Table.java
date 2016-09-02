@@ -2,6 +2,7 @@ package escapegen.basics.container;
 
 import escapegen.basics.lock.SimpleKeyLock;
 import escapegen.model.*;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -25,6 +26,7 @@ public class Table extends Furniture {
     @PostConstruct
     private void configure() {
         secretBox.addDependency(topBox);
+        secretBox.setTopBox(topBox);
         tableBack.putItem(secretBox);
 
         putSpace(Space.On, onTable);
@@ -40,7 +42,7 @@ public class Table extends Furniture {
 
     @Reusable
     @ItemProperty(size = ItemProperties.Size.Small)
-    public class Box extends AbstractContainer {
+    public static class Box extends AbstractContainer {
         @Autowired
         SimpleKeyLock myLock;
 
@@ -58,9 +60,12 @@ public class Table extends Furniture {
 
     @Reusable
     @ItemProperty(size = ItemProperties.Size.Small)
-    public class SecretBox extends AbstractContainer {
+    public static class SecretBox extends AbstractContainer {
         @Autowired
         SimpleKeyLock myLock;
+        @Setter
+        private Box topBox;
+
 
         @ViewFor(SecretBox.class)
         @Override
@@ -81,7 +86,7 @@ public class Table extends Furniture {
 
     @Reusable
     @ItemProperty(size = ItemProperties.Size.Small)
-    public class TableBack extends AbstractContainer {
+    public static class TableBack extends AbstractContainer {
         @ViewFor(TableBack.class)
         @Override
         public void setDescription(ContainerDescription<?> description) {
@@ -91,7 +96,7 @@ public class Table extends Furniture {
 
     @Reusable
     @ItemProperty(matter = ItemProperties.Matter.Hard)
-    public class OnTable extends AbstractContainer {
+    public static class OnTable extends AbstractContainer {
         @ViewFor(OnTable.class)
         @Override
         public void setDescription(ContainerDescription<?> description) {

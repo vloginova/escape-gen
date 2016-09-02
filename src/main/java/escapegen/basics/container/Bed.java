@@ -1,6 +1,7 @@
 package escapegen.basics.container;
 
 import escapegen.model.*;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -28,13 +29,14 @@ public class Bed extends Furniture {
     @PostConstruct
     private void configure() {
         onBed.putItem(pillow);
+        pillow.setOnBed(onBed);
         this.putSpace(Space.On, onBed);
         this.putSpace(Space.Under, underBed);
     }
 
     @Reusable
     @ItemProperty(size = ItemProperties.Size.Small, matter = ItemProperties.Matter.Soft)
-    public class OnBed extends AbstractContainer {
+    public static class OnBed extends AbstractContainer {
         @ViewFor(OnBed.class)
         @Override
         public void setDescription(ContainerDescription<?> description) {
@@ -44,7 +46,7 @@ public class Bed extends Furniture {
 
     @Reusable
     @ItemProperty
-    public class UnderBed extends AbstractContainer {
+    public static class UnderBed extends AbstractContainer {
         @ViewFor(UnderBed.class)
         @Override
         public void setDescription(ContainerDescription<?> description) {
@@ -54,8 +56,10 @@ public class Bed extends Furniture {
 
     @Reusable
     @ItemProperty(matter = ItemProperties.Matter.Soft)
-    public class Pillow extends AbstractContainer {
+    public static class Pillow extends AbstractContainer {
         private int count = 3;
+        @Setter
+        private OnBed onBed;
 
         @ViewFor(Pillow.class)
         @Override

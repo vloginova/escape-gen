@@ -6,9 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * @author - Vita Loginova
  */
 @Component
-@Scope
+@Scope(value="session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class Game {
 
     @Getter @Setter
@@ -41,9 +41,34 @@ public class Game {
     @Autowired
     private ConfigLoader configLoader;
 
-    @PostConstruct
-    private void init() {
-        generator.loadGame(this, 5);
+    private boolean loaded;
+    private int containers = 2;
+
+    private void clear() {
+        inventory.clear();
+        currentSpace = null;
+        room = null;
+        goal = null;
+        isGameOver = false;
+        loaded = false;
+    }
+
+    public void loadGame(GameConfig config) {
+        clear();
+        if (loaded)
+            throw new IllegalStateException("Game cannot be loaded twice");
+        configLoader.configure(config);
+        configLoader.loadGame(this, Integer.MAX_VALUE);
+        loaded = true;
+    }
+
+    public void loadGame() {
+        clear();
+        if (loaded)
+            throw new IllegalStateException("Game cannot be loaded twice");
+        generator.configure();
+        generator.loadGame(this, containers);
+        loaded = true;
     }
 
     public void examineItem(Item i) {
@@ -106,6 +131,7 @@ public class Game {
         config.setRoomBeanClassName(getRoom().getClass().getName());
         config.setGoalBeanClassName(getGoal().getClass().getName());
         config.setBasicsBeanClassNames(room.getItems().stream()
+                .filter(item -> item != getGoal())
                 .map(i -> i.getClass().getName())
                 .collect(Collectors.toList()));
         return config;

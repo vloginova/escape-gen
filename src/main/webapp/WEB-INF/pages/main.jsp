@@ -50,7 +50,7 @@
     <div id="game" class="container" style="display: block">
         <div class="page-header" id="banner">
             <div class="row">
-                <a href="#" class="btn btn-default">Generate a new game</a>
+                <a id="generate-game-btn" href="#" class="btn btn-default">Generate a new game</a>
                 <a id="save-game-btn" href="#" class="btn btn-default">Save this game</a>
             </div>
         </div>
@@ -91,6 +91,8 @@
     var commandNames = null;
     var commands = null;
     $(document).ready(function () {
+        document.getElementById('inputDefault').disabled = true;
+
 
         function loadActions() {
             $.post("${home}game/ping").done(function (data) {
@@ -113,6 +115,17 @@
                     document.getElementById('game').style.display = "none";
                     document.getElementById('save-game-block').style.display = "block";
                 }
+        );
+
+        $('#generate-game-btn').click(function () {
+            $.post("${home}game/generate").done(function (data) {
+                console.log(data);
+                $('#gameContent').find('.panel-body').empty()
+                updateGame(JSON.parse(data));
+            }).fail(function (data) {
+                console.log(data);
+            });
+        }
         );
 
         $('#save-game-submit').click(function () {
@@ -166,6 +179,7 @@
 
     function loadGame(id) {
         $.post("${home}game/load/" + id).done(function (data) {
+            $('#gameContent').find('.panel-body').empty()
             console.log(data);
             $('#play-tab').click();
             updateGame(JSON.parse(data));
@@ -175,6 +189,7 @@
     }
 
     function updateGame(data) {
+        document.getElementById('inputDefault').disabled = false;
         var gameContentBody = $('#gameContent').find('.panel-body');
         gameContentBody.append(data.response);
         gameContentBody.scrollTop(gameContentBody[0].scrollHeight);

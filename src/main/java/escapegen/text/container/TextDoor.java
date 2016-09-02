@@ -17,6 +17,7 @@ public class TextDoor {
     public ContainerDescription<String> doorDescription() {
         return TextContainerDescription.builder()
                 .describeItem(c -> "Looks tough, don't think I can broke it. But there is a keyhole.")
+                .describeEmptyContent(c -> "Congrats!")
                 .describeContent(c -> "Congrats!").build();
     }
 }

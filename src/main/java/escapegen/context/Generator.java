@@ -1,6 +1,5 @@
 package escapegen.context;
 
-import escapegen.context.configuration.GameConfig;
 import escapegen.model.AbstractContainer;
 import escapegen.model.Basic;
 import escapegen.model.Goal;
@@ -8,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Generator is the main class that produces the game.
@@ -42,23 +43,14 @@ public class Generator extends GameLoaderImpl {
     @Autowired
     private ApplicationContext context;
 
-    private GameConfig config;
-
     private List<String> goals;
     private List<String> rootContainers;
     private List<String> rooms;
 
-    @PostConstruct
     public void configure() {
-        if (config != null) {
-            goals = Collections.singletonList(config.getGoalBeanClassName());
-            rooms = Collections.singletonList(config.getRoomBeanClassName());
-            rootContainers = new LinkedList<>(config.getBasicsBeanClassNames());
-        } else {
-            goals = new ArrayList<>(Arrays.asList(context.getBeanNamesForAnnotation(Goal.class)));
-            rootContainers = new ArrayList<>(Arrays.asList(context.getBeanNamesForAnnotation(Basic.class)));
-            rooms = new ArrayList<>(Arrays.asList(context.getBeanNamesForAnnotation(escapegen.model.Room.class)));
-        }
+        goals = new ArrayList<>(Arrays.asList(context.getBeanNamesForAnnotation(Goal.class)));
+        rootContainers = new ArrayList<>(Arrays.asList(context.getBeanNamesForAnnotation(Basic.class)));
+        rooms = new ArrayList<>(Arrays.asList(context.getBeanNamesForAnnotation(escapegen.model.Room.class)));
     }
 
     @Override

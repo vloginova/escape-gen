@@ -29,4 +29,9 @@ public class JavaConfig {
         MongoTemplate gameConfigTemplate = new MongoTemplate(mongoClient(), "gameConfigTemplate");
         return gameConfigTemplate;
     }
+
+    @Bean
+    public String getStr() {
+        return "xx";
+    }
 }
