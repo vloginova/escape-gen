@@ -24,6 +24,6 @@ public class Inventory extends Command {
             return;
         }
 
-        game.getInventory().values().forEach(i -> i.getId());
+        game.getInventory().values().forEach(i -> game.getUserIO().write(i.getId()));
     }
 }
