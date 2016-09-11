@@ -27,7 +27,7 @@ public class CommandLine {
     public void start() {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
             while (!game.isGameOver()) {
-                game.getUserIO().write(game.getCurrentSpace().getId() + "> ");
+                game.getUserPrinter().println(game.getCurrentSpace().getId() + "> ");
                 String command = br.readLine();
 
                 if (command.equals("exit"))

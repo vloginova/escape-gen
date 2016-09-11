@@ -38,12 +38,19 @@ public class CommandExecutor {
         if (c != null) {
             c.execute(args);
         } else {
-            game.getUserIO().write("Wrong command. Try 'help'");
+            game.getUserPrinter().println("Wrong command. Try 'help'");
         }
+
+        invite();
+    }
+
+    public void invite() {
+        if (game.getState() == Game.State.WAITING_FOR_COMMAND)
+            game.getUserPrinter().print(game.getPathToCurrentLocation() + " > ");
     }
 
     private void echo(String command) {
-        game.getUserIO().write(game.getPathToCurrentLocation() + " > " + command);
+        game.getUserPrinter().println(command);
     }
 
     public List<String> getAllCommands() {
@@ -59,20 +66,20 @@ public class CommandExecutor {
         @Override
         public void execute(String[] args) {
             if (args.length != 1 && args.length != 2) {
-                game.getUserIO().write(getHelp());
+                game.getUserPrinter().println(getHelp());
                 return;
             }
 
             if (args.length == 1) {
-                game.getUserIO().write("Use 'help [command]' to see more detail about specific command.");
-                commands.values().forEach(s -> game.getUserIO().write(s.getName()));
+                game.getUserPrinter().println("Use 'help [command]' to see more detail about specific command.");
+                commands.values().forEach(s -> game.getUserPrinter().println(s.getName()));
             } else {
                 Command command = commands.get(args[1]);
                 if (command == null) {
-                    game.getUserIO().write("There is no such command.");
-                    game.getUserIO().write(getHelp());
+                    game.getUserPrinter().println("There is no such command.");
+                    game.getUserPrinter().println(getHelp());
                 }
-                game.getUserIO().write(command.getHelp());
+                game.getUserPrinter().println(command.getHelp());
             }
         }
     }

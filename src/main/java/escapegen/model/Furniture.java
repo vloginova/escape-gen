@@ -12,10 +12,29 @@ import java.util.stream.Collectors;
  */
 public abstract class Furniture extends AbstractContainer {
 
-    protected Map<Space, AbstractContainer> spaces = new HashMap<>();
+    private Map<Space, AbstractContainer> spaces = new HashMap<>();
 
     public enum Space {
-        Under, On, LeftSide, RightSide, Back
+        UNDER("under"), ON("on"), LEFT_SIDE("left"), RIGHT_SIDE("right"), BACK("back"), AT("at");
+
+        private final String name;
+
+        Space(String name) {
+            this.name = name;
+        }
+
+        public static Space getByName(String name) {
+            for (Space space : values()) {
+                if (space.name().equals(name))
+                    return space;
+            }
+
+            throw new IllegalArgumentException("Space with name \"" + name + "\" doesn't exist.");
+        }
+    }
+
+    public Furniture() {
+        putSpace(Space.AT, this);
     }
 
     /**

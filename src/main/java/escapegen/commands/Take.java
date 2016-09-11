@@ -21,14 +21,14 @@ public class Take extends Command {
     @Override
     public void execute(String... args) {
         if (args.length != 2) {
-            game.getUserIO().write(getHelp());
+            game.getUserPrinter().println(getHelp());
             return;
         }
 
         Tool tool = game.getCurrentSpace().popTool(args[1]);
 
         if (tool == null) {
-            game.getUserIO().write("There is no such thing.");
+            game.getUserPrinter().println("There is no such thing.");
             return;
         }
 

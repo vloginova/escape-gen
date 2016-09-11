@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -22,34 +23,38 @@ import java.util.stream.Collectors;
 @Component
 @Scope(value="session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class Game {
+    private Container wfiContainer;
 
+    public enum State {
+        WAITING_FOR_COMMAND, WAITING_FOR_INPUT, GAME_OVER;
+    }
     @Getter @Setter
     private Map<String, Tool> inventory = new HashMap<>();
-    @Getter @Setter
+
+    @Getter
     private Container currentSpace;
-    @Getter @Setter
+    @Getter
     private Container room;
     @Getter @Setter
     private Container goal;
     @Getter @Setter
-    private boolean isGameOver = false;
+    private Game.State state = State.WAITING_FOR_COMMAND;
     @Getter
-    @Resource(name = "userIOWeb")
-    private UserIO<String> userIO;
+    @Resource(name = "userPrinterWeb")
+    private UserPrinter<String> userPrinter;
     @Autowired
     private Generator generator;
     @Autowired
     private ConfigLoader configLoader;
-
     private boolean loaded;
-    private int containers = 2;
 
+    private Function<String, UnlockingResult> callback;
     private void clear() {
         inventory.clear();
         currentSpace = null;
         room = null;
         goal = null;
-        isGameOver = false;
+        state = State.WAITING_FOR_COMMAND;
         loaded = false;
     }
 
@@ -67,51 +72,107 @@ public class Game {
         if (loaded)
             throw new IllegalStateException("Game cannot be loaded twice");
         generator.configure();
+        int containers = 2;
         generator.loadGame(this, containers);
         loaded = true;
     }
 
+    public boolean isGameOver() {
+        return state == State.GAME_OVER;
+    }
+
+    public void setRoom(Container room) {
+        this.room = room;
+        currentSpace = room;
+    }
+
     public void examineItem(Item i) {
-        userIO.write(i.getDescription().describeItem(i).toString());
+        userPrinter.println(i.getDescription().describeItem(i).toString());
+    }
+
+    private boolean processUnlockingResult(Lock l, UnlockingResult result) {
+        LockDescription<?> lockDescription = l.getDescription();
+        if (result.isUnlocked()) {
+            userPrinter.println(lockDescription.describeUnlockingSucceed(l).toString());
+            setState(State.WAITING_FOR_COMMAND);
+        } else if (result.isIntermediate()) {
+            this.callback = result.getCallback();
+            setState(State.WAITING_FOR_INPUT);
+        } else {
+            userPrinter.println(lockDescription.describeUnlockingFailed(l).toString());
+            setState(State.WAITING_FOR_COMMAND);
+        }
+        return result.isUnlocked();
     }
 
     private boolean unlock(Lock l, Tool t) {
-        if (l == null)
+        if (l == null || l.isUnlocked())
             return true;
 
         LockDescription<?> lockDescription = l.getDescription();
-        if (l.isUnlocked())
-            return true;
+        userPrinter.println(lockDescription.describeBeforeUnlocking(l).toString());
+        return processUnlockingResult(l, l.tryUnlock(t));
+    }
 
-        userIO.write(lockDescription.describeBeforeUnlocking(l).toString());
-        boolean result = l.tryUnlock(t);
-        if (result)
-            userIO.write(lockDescription.describeUnlockingSucceed(l).toString());
-        else
-            userIO.write(lockDescription.describeUnlockingFailed(l).toString());
+    private boolean unlockIntermediate(Lock l, String input) {
+        return processUnlockingResult(l, callback.apply(input));
+    }
+
+    public boolean processInput(String input) {
+        return openContainerIntermediate(wfiContainer, input);
+    }
+
+    public void processOpenContainerResult(Container c, boolean result) {
+        if (result) {
+            currentSpace = c;
+            showContent(c);
+        } else if (state == State.WAITING_FOR_INPUT) {
+            wfiContainer = c;
+        }
+    }
+
+    public boolean openContainerIntermediate(Container c, String input) {
+        boolean result = unlockIntermediate(c.getLock(), input) && c.tryOpen();
+        processOpenContainerResult(c, result);
         return result;
     }
 
     public boolean openContainer(Container c, Tool t) {
-        return unlock(c.getLock(), t) && c.tryOpen();
+        boolean result = unlock(c.getLock(), t) && c.tryOpen();
+        processOpenContainerResult(c, result);
+        return result;
     }
 
     public void showContent(Container c) {
         AbstractContainer container = (AbstractContainer) c;
         ContainerDescription<?> description = container.getDescription();
         if (c.isEmpty())
-            userIO.write(description.describeEmptyContent(c).toString());
+            userPrinter.println(description.describeEmptyContent(c).toString());
         else
-            userIO.write(description.describeContent(c).toString());
+            userPrinter.println(description.describeContent(c).toString());
     }
 
     public void apply(Item main, Item applied) {
         ItemDescription<?> description = main.getDescription();
         boolean applyResult = main.apply(applied);
         if (applyResult)
-            userIO.write(description.describeApplySucceed(main, applied).toString());
+            userPrinter.println(description.describeApplySucceed(main, applied).toString());
         else
-            userIO.write(description.describeApplyFailed(main, applied).toString());
+            userPrinter.println(description.describeApplyFailed(main, applied).toString());
+    }
+
+    public boolean look(Furniture f, Furniture.Space space) {
+        Container c = f.getSpace(space);
+        if (c == null)
+            return false;
+
+        currentSpace = c;
+        showContent(c);
+        return true;
+    }
+
+    public void back() {
+        currentSpace = currentSpace.getParent();
     }
 
     public String getPathToCurrentLocation() {

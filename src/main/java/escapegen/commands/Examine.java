@@ -22,7 +22,7 @@ public class Examine extends Command {
     @Override
     public void execute(String... args) {
         if (args.length != 1 && args.length != 2) {
-            game.getUserIO().write(getHelp());
+            game.getUserPrinter().println(getHelp());
             return;
         }
 
@@ -38,7 +38,7 @@ public class Examine extends Command {
         }
 
         if (toExamine == null) {
-            game.getUserIO().write("There is no " + itemName + ".");
+            game.getUserPrinter().println("There is no " + itemName + ".");
             return;
         }
 

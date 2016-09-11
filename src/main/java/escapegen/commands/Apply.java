@@ -23,7 +23,7 @@ public class Apply extends Command {
     @Override
     public void execute(String... args) {
         if (args.length != 4 || !args[2].equals("to")) {
-            game.getUserIO().write(getHelp());
+            game.getUserPrinter().println(getHelp());
             return;
         }
 
@@ -32,13 +32,13 @@ public class Apply extends Command {
 
         Item applyWhat = getItemFromGameContext(applyWhatId);
         if (applyWhat == null) {
-            game.getUserIO().write("There is no " + applyWhatId + ".");
+            game.getUserPrinter().println("There is no " + applyWhatId + ".");
             return;
         }
 
         Item applyTo = getItemFromGameContext(applyToId);
         if (applyTo == null) {
-            game.getUserIO().write("There is no " + applyToId + ".");
+            game.getUserPrinter().println("There is no " + applyToId + ".");
             return;
         }
 

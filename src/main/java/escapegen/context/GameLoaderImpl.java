@@ -115,7 +115,6 @@ public abstract class GameLoaderImpl implements GameLoader {
 
         room = genRoom(random);
         room.putAllItems(furniture);
-        game.setCurrentSpace(room);
         game.setRoom(room);
     }
 }

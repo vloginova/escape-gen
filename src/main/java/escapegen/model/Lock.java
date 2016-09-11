@@ -29,7 +29,7 @@ public abstract class Lock extends AbstractItem {
      * @param tool Tools to unlock the lock.
      * @return {@code true} if {@code Lock} is opened
      */
-    protected abstract boolean unlock(Tool tool);
+    protected abstract UnlockingResult unlock(Tool tool);
 
     /**
      * Tries to unlock {@code this} using {@code tool}
@@ -37,9 +37,13 @@ public abstract class Lock extends AbstractItem {
      * @param tool Tools to unlock the lock.
      * @return {@code true} if unlocking is succeed, {@code else} otherwise.
      */
-    public final boolean tryUnlock(Tool tool) {
-        isUnlocked = isUnlocked || unlock(tool);
-        return isUnlocked;
+    public final UnlockingResult tryUnlock(Tool tool) {
+        if (isUnlocked)
+            return UnlockingResult.SUCCESS;
+
+        UnlockingResult res = unlock(tool);
+        isUnlocked = res.isUnlocked();
+        return res;
     }
 
     /**

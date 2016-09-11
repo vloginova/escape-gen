@@ -29,8 +29,8 @@ public class Table extends Furniture {
         secretBox.setTopBox(topBox);
         tableBack.putItem(secretBox);
 
-        putSpace(Space.On, onTable);
-        putSpace(Space.Back, tableBack);
+        putSpace(Space.ON, onTable);
+        putSpace(Space.BACK, tableBack);
         putItem(topBox);
     }
 

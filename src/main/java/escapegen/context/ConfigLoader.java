@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
@@ -62,10 +61,5 @@ public class ConfigLoader extends GameLoaderImpl {
     @Override
     protected boolean isContainersEmpty() {
         return rootContainers.isEmpty();
-    }
-
-    public static void main(String[] args) {
-        AnnotationConfigApplicationContext c = new AnnotationConfigApplicationContext("escapegen");
-        System.out.println();
     }
 }

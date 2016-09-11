@@ -3,7 +3,7 @@ package escapegen.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import escapegen.commands.CommandExecutor;
 import escapegen.context.Game;
-import escapegen.context.UserIOWeb;
+import escapegen.context.UserPrinterWeb;
 import escapegen.context.configuration.ConfigRepository;
 import escapegen.context.configuration.GameConfig;
 import lombok.SneakyThrows;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/game")
 public class GameController {
     @Autowired
-    private UserIOWeb io;
+    private UserPrinterWeb io;
     @Autowired
     private Game game;
     @Autowired
@@ -33,7 +33,17 @@ public class GameController {
 
     @RequestMapping("/execute-command/{command}")
     public @ResponseBody String executeCommand(@PathVariable("command") String command) {
-        commandExecutor.executeCommand(command);
+        switch (game.getState()) {
+            case WAITING_FOR_COMMAND:
+                commandExecutor.executeCommand(command);
+                break;
+            case WAITING_FOR_INPUT:
+                game.processInput(command);
+                commandExecutor.invite();
+                break;
+            case GAME_OVER:
+                break;
+        }
         return objectToJson(createResponse());
     }
 
@@ -41,6 +51,7 @@ public class GameController {
     public @ResponseBody String loadGame(@PathVariable("id") String id) {
         GameConfig config = repository.findByConfigId(id);
         game.loadGame(config);
+        commandExecutor.invite();
         return objectToJson(createResponse());
     }
 
@@ -55,9 +66,7 @@ public class GameController {
     @RequestMapping("/generate")
     public @ResponseBody String generateGame() {
         game.loadGame();
-        GameStateResponse response = new GameStateResponse();
-        response.setCurrentLocation(game.getPathToCurrentLocation());
-        response.setResponse(io.retrieveBufferedData());
+        commandExecutor.invite();
         return objectToJson(createResponse());
     }
 

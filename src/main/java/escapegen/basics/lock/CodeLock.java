@@ -36,9 +36,12 @@ public class CodeLock extends Lock {
     }
 
     @Override
-    protected boolean unlock(Tool tool) {
-//        String inCode = UserIOConsole.getInstance().readLine();
-//        return inCode.equals(String.format("%04d", code));
-        return true;
+    protected UnlockingResult unlock(Tool tool) {
+        return new UnlockingResult(this::inputCode);
+    }
+
+    private UnlockingResult inputCode(String inCode) {
+        isUnlocked = inCode.equals(String.format("%04d", code));
+        return isUnlocked ? UnlockingResult.SUCCESS: UnlockingResult.FAIL;
     }
 }

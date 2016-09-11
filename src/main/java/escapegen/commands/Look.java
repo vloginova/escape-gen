@@ -1,7 +1,6 @@
 package escapegen.commands;
 
 import escapegen.context.Game;
-import escapegen.model.AbstractContainer;
 import escapegen.model.Furniture;
 import escapegen.model.Item;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ public class Look extends Command {
     @Override
     public void execute(String... args) {
         if (args.length != 3) {
-            game.getUserIO().write(getHelp());
+            game.getUserPrinter().println(getHelp());
             return;
         }
 
@@ -37,45 +36,28 @@ public class Look extends Command {
         Item lookTo = game.getCurrentSpace().peekItem(furnitureString);
 
         if (lookTo == null) {
-            game.getUserIO().write("There is no " + furnitureString);
+            game.getUserPrinter().println("There is no " + furnitureString);
+            return;
+        }
+
+        if (!(lookTo instanceof Furniture)) {
+            game.getUserPrinter().println("Can't look there.");
             return;
         }
 
         Furniture.Space space;
-        switch (spaceString) {
-            case "on":
-                space = Furniture.Space.On;
-                break;
-            case "back":
-                space = Furniture.Space.Back;
-                break;
-            case "left":
-                space = Furniture.Space.LeftSide;
-                break;
-            case "right":
-                space = Furniture.Space.RightSide;
-                break;
-            case "under":
-                space = Furniture.Space.Under;
-                break;
-            default:
-                game.getUserIO().write("There is no such space.");
-                return;
-        }
-
-        if (!Furniture.class.isInstance(lookTo)) {
-            game.getUserIO().write("Can't look there.");
+        try {
+            space = Furniture.Space.getByName(spaceString);
+        } catch (IllegalArgumentException e) {
+            game.getUserPrinter().println("There is no such space.");
             return;
         }
 
-        AbstractContainer container = ((Furniture) lookTo).getSpace(space);
+        game.look((Furniture) lookTo, space);
 
-        if (container == null) {
-            game.getUserIO().write("Can't look there.");
-            return;
+        boolean result = game.look((Furniture) lookTo, space);
+        if (!result) {
+            game.getUserPrinter().println("Can't look there.");
         }
-
-        game.setCurrentSpace(container);
-        game.showContent(container);
     }
 }

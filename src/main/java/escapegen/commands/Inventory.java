@@ -20,10 +20,10 @@ public class Inventory extends Command {
     @Override
     public void execute(String... args) {
         if (args.length != 1) {
-            game.getUserIO().write(getHelp());
+            game.getUserPrinter().println(getHelp());
             return;
         }
 
-        game.getInventory().values().forEach(i -> game.getUserIO().write(i.getId()));
+        game.getInventory().values().forEach(i -> game.getUserPrinter().println(i.getId()));
     }
 }

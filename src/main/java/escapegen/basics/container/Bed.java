@@ -30,8 +30,8 @@ public class Bed extends Furniture {
     private void configure() {
         onBed.putItem(pillow);
         pillow.setOnBed(onBed);
-        this.putSpace(Space.On, onBed);
-        this.putSpace(Space.Under, underBed);
+        this.putSpace(Space.ON, onBed);
+        this.putSpace(Space.UNDER, underBed);
     }
 
     @Reusable

@@ -1,27 +1,24 @@
 package escapegen.context;
 
-import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 /**
  * Created by vita on 9/1/16.
  */
 @Component
-public class UserIOWeb implements UserIO<String> {
+public class UserPrinterWeb implements UserPrinter<String> {
     private final StringBuilder stringBuilder = new StringBuilder();
-    @Getter
-    private boolean inputNeeded;
 
     @Override
-    public void write(String data) {
+    public void print(String data) {
         String fixed = data.replace("\n", "<br>");
-        stringBuilder.append(fixed).append("<br>");
+        stringBuilder.append(fixed);
     }
 
     @Override
-    public String read() {
-        inputNeeded = true;
-        return null;
+    public void println(String data) {
+        print(data);
+        stringBuilder.append("<br>");
     }
 
     public String retrieveBufferedData() {

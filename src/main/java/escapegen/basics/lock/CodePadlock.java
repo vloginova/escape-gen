@@ -36,8 +36,12 @@ public class CodePadlock extends Lock {
     }
 
     @Override
-    protected boolean unlock(Tool tool) {
-       // String inCode = UserIOConsole.getInstance().readLine();
-        return true;// inCode.equals(code);
+    protected UnlockingResult unlock(Tool tool) {
+        return new UnlockingResult(this::inputCode);
+    }
+
+    private UnlockingResult inputCode(String inCode) {
+        isUnlocked = inCode.equals(code);
+        return isUnlocked ? UnlockingResult.SUCCESS : UnlockingResult.FAIL;
     }
 }

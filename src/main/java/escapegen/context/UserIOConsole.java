@@ -1,25 +1,19 @@
 package escapegen.context;
 
-import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 
 /**
  * @author - Vita Loginova
  */
 @Component
-public class UserIOConsole implements UserIO<String> {
+public class UserIOConsole implements UserPrinter<String> {
     @Override
-    public void write(String string) {
+    public void print(String string) {
         System.out.println(string);
     }
 
-    @SneakyThrows
     @Override
-    public String read() {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        return br.readLine();
+    public void println(String data) {
+        System.out.print(data);
     }
 }

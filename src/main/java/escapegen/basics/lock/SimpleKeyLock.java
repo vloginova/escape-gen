@@ -26,13 +26,13 @@ public class SimpleKeyLock extends Lock {
     }
 
     @Override
-    protected boolean unlock(Tool tool) {
-        boolean unlocked = tools.contains(tool);
-
-        if (unlocked)
+    protected UnlockingResult unlock(Tool tool) {
+        if (tools.contains(tool)) {
             tool.setUsed(true);
+            return UnlockingResult.SUCCESS;
+        }
 
-        return unlocked;
+        return UnlockingResult.FAIL;
     }
 
     @Reusable
