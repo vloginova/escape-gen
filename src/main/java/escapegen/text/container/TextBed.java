@@ -24,7 +24,7 @@ public class TextBed {
     public ContainerDescription<String> pillowDescription() {
         return TextContainerDescription.builder()
                 .describeItem(c -> "Just a soft pillow. *Yawn*")
-                .describeEmptyContent(c -> "Something fell out of the pillow on a bed!").build();
+                .describeContent(c -> "Something fell out of the pillow!").build();
     }
 
     @Bean

@@ -79,7 +79,7 @@ public class Bed extends Furniture {
             if (count > 0) count--;
             if (count == 0) {
                 items.values().forEach(i -> i.setVisible(true));
-                onBed.putAllItems(removeItems());
+                //onBed.putAllItems(removeItems());
             }
             return count > 0 || super.tryOpen();
         }

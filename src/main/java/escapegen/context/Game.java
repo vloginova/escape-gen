@@ -72,7 +72,7 @@ public class Game {
         if (loaded)
             throw new IllegalStateException("Game cannot be loaded twice");
         generator.configure();
-        int containers = 2;
+        int containers = 10;
         generator.loadGame(this, containers);
         loaded = true;
     }
@@ -146,10 +146,11 @@ public class Game {
     public void showContent(Container c) {
         AbstractContainer container = (AbstractContainer) c;
         ContainerDescription<?> description = container.getDescription();
-        if (c.isEmpty())
+        if (c.isEmpty()) {
             userPrinter.println(description.describeEmptyContent(c).toString());
-        else
+        } else {
             userPrinter.println(description.describeContent(c).toString());
+        }
     }
 
     public void apply(Item main, Item applied) {

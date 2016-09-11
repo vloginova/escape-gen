@@ -25,8 +25,9 @@ public class TextContainerDescription extends TextItemDescription implements Con
         super(describeItem, describeApplyFailed, describeApplySucceed);
         if (describeEmptyContent != null)
             this.describeEmptyContent = describeEmptyContent;
-        if (describeContent != null)
-            this.describeContent = describeContent;
+        if (describeContent != null) {
+            this.describeContent = c -> describeContent.apply(c) + "\n" + describeContentDefault(c);
+        }
     }
 
     @Override

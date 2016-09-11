@@ -47,13 +47,11 @@ public class Look extends Command {
 
         Furniture.Space space;
         try {
-            space = Furniture.Space.getByName(spaceString);
+            space = Furniture.Space.getByStringRepresentation(spaceString);
         } catch (IllegalArgumentException e) {
             game.getUserPrinter().println("There is no such space.");
             return;
         }
-
-        game.look((Furniture) lookTo, space);
 
         boolean result = game.look((Furniture) lookTo, space);
         if (!result) {

@@ -17,19 +17,19 @@ public abstract class Furniture extends AbstractContainer {
     public enum Space {
         UNDER("under"), ON("on"), LEFT_SIDE("left"), RIGHT_SIDE("right"), BACK("back"), AT("at");
 
-        private final String name;
+        private final String representation;
 
-        Space(String name) {
-            this.name = name;
+        Space(String representation) {
+            this.representation = representation;
         }
 
-        public static Space getByName(String name) {
+        public static Space getByStringRepresentation(String representation) {
             for (Space space : values()) {
-                if (space.name().equals(name))
+                if (space.representation.equals(representation))
                     return space;
             }
 
-            throw new IllegalArgumentException("Space with name \"" + name + "\" doesn't exist.");
+            throw new IllegalArgumentException("Space with representation \"" + representation + "\" doesn't exist.");
         }
     }
 

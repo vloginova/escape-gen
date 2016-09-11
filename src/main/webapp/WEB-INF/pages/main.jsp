@@ -172,7 +172,7 @@
         function populateList(data) {
             $("#saved-list a").remove();
             $.each(data, function (index, item) {
-                $("#saved-list").append('<a onclick="loadGame(\'' + item.id + '\')" class="list-group-item">' + item.name + '</a>');
+                $("#saved-list").append('<a onclick="loadGame(\'' + item.id + '\')" class="list-group-item">' + item.representation + '</a>');
             });
         }
     });
